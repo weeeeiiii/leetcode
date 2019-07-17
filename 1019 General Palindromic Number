@@ -1,0 +1,45 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+using namespace std;
+
+vector<int> q;
+
+int s,m;
+void zhuanhuan()
+{
+    while(s!=0)
+    {
+        int yushu=s%m;
+        s=s/m;
+        q.push_back(yushu);
+    }
+}
+
+int main()
+{
+    cin>>s>>m;
+    zhuanhuan();
+    int tag=1;
+    for(int i=0;i<q.size()/2;i++)
+    {
+        if(q[i]!=q[q.size()-i-1])
+        {
+            tag=0;
+        }
+    }
+    if(tag==1)
+    {
+        printf("Yes\n");
+    }
+    else
+    {
+        printf("No\n");
+    }
+    for(int i=q.size()-1;i>=0;i--)
+    {
+        printf("%d",q[i]);
+        if(i!=0) printf(" ");
+    }
+    return 0;
+}
