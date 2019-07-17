@@ -1,0 +1,73 @@
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+const int maxn=40;
+int post[maxn],inor[maxn],pre[maxn];
+int n;
+struct Node{
+    int data;
+    Node* lchild;
+    Node* rchild;
+};
+
+Node *create(int postL,int postR,int inL,int inR)
+{
+    if(postL>postR)
+    {
+        return NULL;
+    }
+    Node * root=new Node;
+    root->data=post[postR];
+    int k;
+    for(k=inL;k<=inR;k++)
+    {
+        if(inor[k]==post[postR]) break;
+    }
+    int numLeft=k-inL;
+    root->lchild=create(postL,postL+numLeft-1,inL,k-1);
+    root->rchild=create(postL+numLeft,postR-1,k+1,inR);
+    return root;
+}
+
+int num=0;
+void BFS(Node* root){
+    queue<Node*> q;
+    q.push(root);
+    while (!q.empty())
+    {
+        Node* now = q.front();
+        q.pop();
+        cout<<now->data;
+        num++;
+        if (num<n)
+        {
+            cout<<" ";
+        }
+        if (now->lchild!=NULL)
+        {
+            q.push(now->lchild);
+        }
+        if (now->rchild!=NULL)
+        {
+            q.push(now->rchild);
+        }
+    }
+}
+int main(){
+    cin>>n;
+    for (int i = 0; i < n; i++)
+    {
+        cin>>post[i];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cin>>inor[i];
+    }
+    Node* root = create(0, n-1, 0, n-1);
+    BFS(root);//层序遍历
+    return 0;
+}
