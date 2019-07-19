@@ -1,0 +1,139 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+
+struct book{
+    string id;
+    string title;
+    string author;
+    string key_word;
+    string publisher;
+    string year;
+}b[10010];
+
+int m;
+
+bool cmp(book Node1,book Node2)
+{
+    return Node1.id<Node2.id;
+}
+
+void find(int number,string q)
+{
+    int tag=0;
+    if(number==1)
+    {
+        printf("%d: ",number);
+        cout<<q;
+        printf("\n");
+        for(int i=0;i<m;i++)
+        {
+            if(b[i].title==q)
+            {
+                tag=1;
+                cout<<b[i].id;
+                printf("\n");
+            }
+        }
+    }
+    else if(number==2)
+    {
+        printf("%d: ",number);
+        cout<<q;
+        printf("\n");
+        for(int i=0;i<m;i++)
+        {
+            if(b[i].author==q)
+            {
+                tag=1;
+                cout<<b[i].id;
+                printf("\n");
+            }
+        }
+    }
+    else if(number==3)
+    {
+        printf("%d: ",number);
+        cout<<q;
+        printf("\n");
+        for(int i=0;i<m;i++)
+        {
+            if(b[i].key_word.find(q)!=string::npos)
+            {
+                tag=1;
+                cout<<b[i].id;
+                printf("\n");
+            }
+        }
+    }
+    else if(number==4)
+    {
+        printf("%d: ",number);
+        cout<<q;
+        printf("\n");
+        for(int i=0;i<m;i++)
+        {
+            if(b[i].publisher==q)
+            {
+                tag=1;
+                cout<<b[i].id;
+                printf("\n");
+            }
+        }
+    }
+    else if(number==5)
+    {
+        printf("%d: ",number);
+        cout<<q;
+        printf("\n");
+        for(int i=0;i<m;i++)
+        {
+            if(b[i].year==q)
+            {
+                tag=1;
+                cout<<b[i].id;
+                printf("\n");
+            }
+        }
+    }
+    if(tag==0)
+    {
+        printf("Not Found\n");
+    }
+}
+
+int main()
+{
+    cin>>m;
+    for(int i=0;i<m;i++)
+    {
+        book Node;
+        cin>>Node.id;
+        getchar();
+        getline(cin,Node.title,'\n');
+        getline(cin,Node.author,'\n');
+        getline(cin,Node.key_word,'\n');
+        getline(cin,Node.publisher,'\n');
+        cin>>Node.year;
+        b[i]=Node;
+    }
+    sort(b,b+m,cmp);
+    int M;
+    cin>>M;
+    getchar();
+    for(int i=0;i<M;i++)
+    {
+        string q;
+        getline(cin,q,'\n');
+        int number=q[0]-'0';
+        for(int j=0;j<3;j++)
+        {
+            q.erase(q.begin());
+        }
+        find(number,q);
+    }
+    return 0;
+}
