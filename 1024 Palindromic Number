@@ -1,0 +1,71 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+string jiafa(string s1,string s2)
+{
+    int length=s1.length();
+    int carry=0;
+    string s;
+    while(length--)
+    {
+        int wei1=s1[length]-'0';
+        int wei2=s2[length]-'0';
+        if(wei1+wei2+carry>=10)
+        {
+            s.insert(s.begin(),'0'+wei1+wei2-10+carry);
+            carry=1;
+        }
+        else
+        {
+            s.insert(s.begin(),'0'+wei1+wei2+carry);
+            carry=0;
+        }
+    }
+    if(carry==1)
+    {
+        s.insert(0,"1");
+    }
+    return s;
+}
+
+int panduan(string s)
+{
+    string temp=s;
+    reverse(temp.begin(),temp.end());
+    int tag;
+    if(temp==s) tag=1;
+    else tag=0;
+    return tag;
+}
+
+string zhuanhuan(string s1)
+{
+    string s2;
+    s2=s1;
+    reverse(s2.begin(),s2.end());
+    string s=jiafa(s1,s2);
+    return s;
+}
+
+int main()
+{
+    string N;
+    int K;
+    cin>>N>>K;
+    int cishu=0;
+    while(K--)
+    {
+        if(panduan(N)==1)
+        {
+            break;
+        }
+        cishu++;
+        N=zhuanhuan(N);
+    }
+    cout<<N<<endl<<cishu;
+    return 0;
+}
