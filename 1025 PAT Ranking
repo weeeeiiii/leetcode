@@ -1,0 +1,95 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+#include<string>
+using namespace std;
+
+struct tester{
+    string number;
+    int final_rank;
+    int local_number;
+    int local_rank;
+    int grade;
+};
+
+vector<tester> final;
+vector<tester> local;
+
+int N,K;
+
+int cmp(tester t1,tester t2)
+{
+    if(t1.grade!=t2.grade)
+    {
+        return t1.grade>t2.grade;
+    }
+    return t1.number<t2.number;
+}
+
+int main()
+{
+    cin>>N;
+    int local_number=0;
+    while(N--)
+    {
+        local_number++;
+        cin>>K;
+        local.clear();
+        for(int i=0;i<K;i++)
+        {
+            tester temp;
+            cin>>temp.number>>temp.grade;
+            temp.local_number=local_number;
+            local.push_back(temp);
+        }
+        sort(local.begin(),local.begin()+K,cmp);
+        for(int i=0;i<K;i++)
+        {
+            if(i>=1)
+            {
+                if(local[i].grade==local[i-1].grade)
+                {
+                    local[i].local_rank=local[i-1].local_rank;
+                }
+                else
+                {
+                    local[i].local_rank=i+1;
+                }
+            }
+            else
+            {
+                local[i].local_rank=i+1;
+            }
+        }
+        for(int i=0;i<K;i++)
+        {
+            final.push_back(local[i]);
+        }
+    }
+
+    sort(final.begin(),final.begin()+final.size(),cmp);
+    for(int i=0;i<final.size();i++)
+    {
+        if(i>=1)
+        {
+            if(final[i].grade==final[i-1].grade)
+            {
+                final[i].final_rank=final[i-1].final_rank;
+            }
+            else
+            {
+                final[i].final_rank=i+1;
+            }
+        }
+        else
+        {
+            final[i].final_rank=i+1;
+        }
+    }
+    printf("%d\n",final.size());
+    for(int i=0;i<final.size();i++)
+    {
+        cout<<final[i].number<<' '<<final[i].final_rank<<' '<<final[i].local_number<<' '<<final[i].local_rank<<endl;
+    }
+}
