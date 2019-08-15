@@ -1,0 +1,142 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+struct person {
+    int arrive, start, time;
+    bool vip;
+}tempperson;
+
+struct tablenode {
+    int end = 8 * 3600, num;   //是否为vip桌，服务过的人数
+    bool vip;
+};
+
+bool cmp1(person a, person b) {   //按照到达时间排序
+    return a.arrive < b.arrive;
+}
+
+bool cmp2(person a, person b) {   //按照开始时间排序
+    return a.start < b.start;
+}
+
+vector<person> player;
+vector<tablenode> table;
+
+void alloctable(int personid, int tableid) {
+    if(player[personid].arrive <= table[tableid].end)  //如果客人到达时没有空闲桌子
+        player[personid].start = table[tableid].end;   //客人开始时间就等于桌子空闲时间
+    else                                               //如果客人到达时有空闲桌子
+        player[personid].start = player[personid].arrive;  //开始时间就等于到达时间
+    table[tableid].end = player[personid].start + player[personid].time; //桌子的下次空闲时间就等于客人start+time
+    table[tableid].num++;
+}
+
+int findnextvip(int vipid) {           //找到队列中的下一个vip客户
+    vipid++;
+    while(vipid < player.size() && player[vipid].vip == false) vipid++;
+    return vipid;
+}
+
+int main() {
+    int n, k, m, viptable;
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++) {
+        int h, m, s, temptime, flag;
+        scanf("%d:%d:%d %d %d", &h, &m, &s, &temptime, &flag);  //这种读取数值的方法属实牛逼
+        tempperson.arrive = h * 3600 + m * 60 + s;
+        tempperson.start = 21 * 3600;
+        if(tempperson.arrive >= 21 * 3600) continue;        //到达的时间大于21时，则不用管这组数据
+        tempperson.time = temptime <= 120 ? temptime * 60 : 7200;  //time大于2小时按2小时计算
+        tempperson.vip = ((flag == 1) ? true : false);      //设置这个人的vip
+        player.push_back(tempperson);            //将这个人放入队列中
+    }
+    scanf("%d%d", &k, &m);
+    table.resize(k + 1);
+    for(int i = 0; i < m; i++) {
+        scanf("%d", &viptable);
+        table[viptable].vip = true;
+    }
+    sort(player.begin(), player.end(), cmp1);  //按照队列中人的到达时间排序
+    int i = 0, vipid = -1;
+    vipid = findnextvip(vipid);                //找到队列中的第一个vip客户
+    while(i < player.size()) {
+        int index = -1, minendtime = 999999999;
+        for(int j = 1; j <= k; j++) {          //找到号码最小的接下来将会空闲的桌子
+            if(table[j].end < minendtime) {
+                minendtime = table[j].end;
+                index = j;
+            }
+        }
+        if(table[index].end >= 21 * 3600) break;  //若桌子空闲时超过了21点，直接退出
+        if(player[i].vip == true && i < vipid) {
+            i++;
+            continue;
+        }
+        if(table[index].vip == true)
+        {            //如果空闲的是vip桌子
+            if(player[i].vip == true)
+            {           //如果第一个人也是vip客户
+                alloctable(i, index);
+                if(vipid == i) vipid = findnextvip(vipid);  //vipid指向下一个vip客户
+                i++;
+            }
+            else
+            {      //如果第一个人不是vip客户，则找到队列中的第一个vip客户
+                if(vipid < player.size() && player[vipid].arrive <= table[index].end)
+                {
+                    alloctable(vipid, index);
+                    vipid = findnextvip(vipid);
+                } //没有vip客户或者vip客户不在等待的队列中，则直接分配给普通人
+                else
+                {
+                    alloctable(i, index);
+                    i++;
+                }
+            }
+        }
+        else   //如果空闲的是普通桌子
+        {
+            if(player[i].vip == false)   //如果是普通人，则直接分配给他
+            {
+                alloctable(i, index);
+                i++;
+            }
+            else    //如果是vip客户，还需要找到是否有最小的空闲的VIP桌子
+            {
+                int vipindex = -1, minvipendtime = 999999999;
+                for(int j = 1; j <= k; j++)
+                {      //找到接下来将会空闲的vip桌子
+                    if(table[j].vip == true && table[j].end < minvipendtime) {
+                        minvipendtime = table[j].end;
+                        vipindex = j;
+                    }
+                }
+                if(vipindex != -1 && player[i].arrive >= table[vipindex].end)
+                {      //存在空闲的vip桌子并且到达时间大于空闲的时间
+                    alloctable(i, vipindex);
+                    if(vipid == i) vipid = findnextvip(vipid);
+                    i++;
+                }
+                else  //不存在空闲的vip桌子
+                {
+                    alloctable(i, index);
+                    if(vipid == i) vipid = findnextvip(vipid);
+                    i++;
+                }
+            }
+        }
+    }
+    sort(player.begin(), player.end(), cmp2);
+    for(i = 0; i < player.size() && player[i].start < 21 * 3600; i++) {
+        printf("%02d:%02d:%02d ", player[i].arrive / 3600, player[i].arrive % 3600 / 60, player[i].arrive % 60);
+        printf("%02d:%02d:%02d ", player[i].start / 3600, player[i].start % 3600 / 60, player[i].start % 60);
+        printf("%.0f\n", round((player[i].start - player[i].arrive) / 60.0));
+    }
+    for(int i = 1; i <= k; i++) {
+        if(i != 1) printf(" ");
+        printf("%d", table[i].num);
+    }
+    return 0;
+}
