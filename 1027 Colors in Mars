@@ -1,0 +1,30 @@
+#include<cstdio>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+void zhuanhuan(int number)
+{
+    int shiwei=number/13;
+    int gewei=number%13;
+    if(shiwei==10) printf("A");
+    else if(shiwei==11) printf("B");
+    else if(shiwei==12) printf("C");
+    else printf("%d",shiwei);
+
+    if(gewei==10) printf("A");
+    else if(gewei==11) printf("B");
+    else if(gewei==12) printf("C");
+    else printf("%d",gewei);
+}
+
+int main()
+{
+    int num1,num2,num3;
+    cin>>num1>>num2>>num3;
+    printf("#");
+    zhuanhuan(num1);
+    zhuanhuan(num2);
+    zhuanhuan(num3);
+    return 0;
+}
