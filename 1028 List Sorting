@@ -1,0 +1,51 @@
+#include<cstdio>
+#include<algorithm>
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+int N,C;
+struct student{
+    string ID;
+    string name;
+    int grade;
+};
+
+vector<student> stu;
+bool cmp(student a,student b)
+{
+    if(C==1)
+    {
+        return a.ID<b.ID;
+    }
+    else if(C==2)
+    {
+        if(a.name==b.name)
+            return a.ID<b.ID;
+        else return a.name<b.name;
+    }
+    else if(C==3)
+    {
+        if(a.grade==b.grade)
+            return a.ID<b.ID;
+        else return a.grade<b.grade;
+    }
+}
+
+int main()
+{
+    cin>>N>>C;
+    for(int i=0;i<N;i++)
+    {
+        student temp;
+        cin>>temp.ID>>temp.name>>temp.grade;
+        stu.push_back(temp);
+    }
+    sort(stu.begin(),stu.begin()+N,cmp);
+    for(int i=0;i<N;i++)
+    {
+        cout<<stu[i].ID<<' '<<stu[i].name<<' '<<stu[i].grade<<endl;
+    }
+    return 0;
+}
