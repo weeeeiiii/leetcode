@@ -1,0 +1,60 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<string>
+#include<map>
+using namespace std;
+
+struct Node{
+    int address;
+    char zimu;
+    int next;
+    int tag=0;
+};
+
+vector<Node> v,v1,v2;
+int start1,start2;
+int number;
+int mp[100000];
+
+int main()
+{
+    cin>>start1>>start2>>number;
+    for(int i=0;i<number;i++)
+    {
+        Node temp;
+        cin>>temp.address>>temp.zimu>>temp.next;
+        mp[temp.address]=i;
+        v.push_back(temp);
+    }
+    while(start1!=-1)
+    {
+        int xiabiao=mp[start1];
+        v[xiabiao].tag=1;
+        v1.push_back(v[xiabiao]);
+        start1=v[xiabiao].next;
+    }
+
+    int tag=0;
+    int position;
+    while(start2!=-1)
+    {
+        int xiabiao=mp[start2];
+        if(v[xiabiao].tag==1)
+        {
+            position=v[xiabiao].address;
+            tag=1;
+            break;
+        }
+        v2.push_back(v[xiabiao]);
+        start2=v[xiabiao].next;
+    }
+    if(tag==0) cout<<-1;
+    else
+    {
+        printf("%05d",position);
+    }
+    return 0;
+}
