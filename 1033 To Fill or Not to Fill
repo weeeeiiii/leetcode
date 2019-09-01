@@ -1,0 +1,124 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+double Cmax,D,Davg,N;
+
+struct station{
+    double price;
+    int distance;
+};
+
+double nowdis=0,maxdis=0;
+double nowprice=0,totalprice=0;
+double now_tank=0;
+vector<station> v;
+int tag=0;
+
+bool cmp1(station a,station b)      //按照距离给各个加油站排序
+{
+    return a.distance<b.distance;
+}
+
+bool cmp2(station a,station b)      //按照价钱给各个加油站排序
+{
+    return a.price<b.price;
+}
+
+void find()
+{
+    vector<station> temp;
+    for(int i=0;i<N+1;i++)
+    {
+        if(nowdis<=v[i].distance&&v[i].distance<=nowdis+maxdis)
+        {
+            temp.push_back(v[i]);
+        }
+    }
+    sort(temp.begin(),temp.begin()+temp.size(),cmp2);
+    if(nowdis==temp[0].distance)       //最低价钱的车站是当前车站
+    {
+        totalprice+=(Cmax-now_tank)*temp[0].price;
+        now_tank=Cmax;
+        if(nowdis>=D)
+        {
+            tag=1;
+            return;      //成功到达
+        }
+        else
+        {
+            sort(temp.begin(),temp.begin()+temp.size(),cmp1);   //按照距离排序
+            if(temp.size()==1)
+            {
+                nowdis+=Cmax*Davg;
+                tag=2;
+                return;    //到达不了
+            }
+            now_tank=now_tank-(temp[1].distance-nowdis)/Davg;
+            nowdis=temp[1].distance;
+        }
+    }
+    else
+    {
+        sort(temp.begin(),temp.begin()+temp.size(),cmp1);
+        nowprice=temp[0].price;
+        for(int i=1;i<temp.size();i++)
+        {
+            if(nowprice>temp[i].price)
+            {
+                temp[0]=temp[i];
+                break;
+            }
+        }
+        double now_max_dis=now_tank*Davg;
+        if(now_max_dis>=temp[0].distance-nowdis)  //油够到达最低价钱的一站
+        {
+            now_tank=now_tank-(temp[0].distance-nowdis)/Davg;
+            nowdis=temp[0].distance;
+        }
+        else                                      //油不够到达最低价钱的一站
+        {
+            double need_dis=temp[0].distance-nowdis;  //总共需要行驶的里程
+            nowdis=temp[0].distance;
+            double need_tank=need_dis/Davg-now_tank;  //需要多行驶的油
+            sort(temp.begin(),temp.begin()+temp.size(),cmp1);
+            totalprice+=need_tank*nowprice;      //花费的钱
+            now_tank=0;
+        }
+    }
+
+    return;
+}
+
+int main()
+{
+    cin>>Cmax>>D>>Davg>>N;
+    maxdis=Cmax*Davg;
+    for(int i=0;i<N;i++)
+    {
+        station temp;
+        cin>>temp.price>>temp.distance;
+        v.push_back(temp);
+    }
+    station temp;
+    temp.distance=D;
+    temp.price=0;
+    v.push_back(temp);
+    sort(v.begin(),v.begin()+v.size(),cmp1);
+
+    while(tag==0)
+    {
+        find();
+    }
+    if(tag==1)
+    {
+        printf("%.2f",totalprice);
+    }
+    else if(tag==2)
+    {
+        printf("The maximum travel distance = %.2f",nowdis);
+    }
+    return 0;
+}
