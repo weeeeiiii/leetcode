@@ -1,0 +1,85 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<map>
+#include<vector>
+using namespace std;
+
+string head;
+int total,cnt;
+map<string,int> weight;
+map<string,bool> visit;
+map<string,vector<string>>adjlist;
+int N,K;
+struct gang{
+    string head;
+    int numbers;
+};
+vector<gang> v;
+
+bool cmp(gang a,gang b)
+{
+    return a.head<b.head;
+}
+
+void DFS(string s)
+{
+    visit[s]=true;
+    cnt++;
+    if(weight[s]>weight[head])
+    {
+        head=s;
+    }
+    total+=weight[s];
+    for(int i=0;i<adjlist[s].size();i++)
+    {
+        string temp=adjlist[s][i];
+        if(!visit[temp])
+        {
+            DFS(temp);
+        }
+    }
+}
+
+int main()
+{
+    cin>>N>>K;
+    for(int i=0;i<N;i++)
+    {
+        string name1,name2;
+        int minute;
+        cin>>name1>>name2>>minute;
+        visit[name1]=false;
+        visit[name2]=false;
+        weight[name1]+=minute;
+        weight[name2]+=minute;
+        adjlist[name1].push_back(name2);
+        adjlist[name2].push_back(name1);
+    }
+
+    for(map<string,bool> ::iterator it=visit.begin();it!=visit.end();it++)
+    {
+        if(it->second)
+        {
+            continue;
+        }
+        head=it->first;
+        total=0;
+        cnt=0;
+        DFS(head);
+        if(cnt>2&&total/2>K)
+        {
+            gang temp;
+            temp.numbers=cnt;
+            temp.head=head;
+            v.push_back(temp);
+        }
+    }
+    sort(v.begin(),v.begin()+v.size(),cmp);
+    cout<<v.size()<<endl;
+    for(int i=0;i<v.size();i++)
+    {
+        cout<<v[i].head<<" "<<v[i].numbers<<endl;
+    }
+    return 0;
+}
