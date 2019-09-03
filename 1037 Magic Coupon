@@ -1,0 +1,54 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int Nc,Np;
+vector<int> coupons_zheng;
+vector<int> product_zheng;
+vector<int> coupons_fu;
+vector<int> product_fu;
+int main()
+{
+    cin>>Nc;
+    for(int i=0;i<Nc;i++)
+    {
+        int temp;
+        cin>>temp;
+        if(temp<0) coupons_fu.push_back(temp);
+        else coupons_zheng.push_back(temp);
+    }
+    cin>>Np;
+    for(int i=0;i<Np;i++)
+    {
+        int temp;
+        cin>>temp;
+        if(temp<0) product_fu.push_back(temp);
+        else product_zheng.push_back(temp);
+    }
+
+    int max=0;
+    int cnt_1_zheng=coupons_zheng.size();
+    int cnt_2_zheng=product_zheng.size();
+    sort(coupons_zheng.begin(),coupons_zheng.begin()+coupons_zheng.size());
+    sort(product_zheng.begin(),product_zheng.begin()+product_zheng.size());
+    while(cnt_1_zheng--&&cnt_2_zheng--)
+    {
+        max+=coupons_zheng[cnt_1_zheng]*product_zheng[cnt_2_zheng];
+    }
+
+    int cnt_1_fu=coupons_fu.size();
+    int cnt_2_fu=product_fu.size();
+    sort(coupons_fu.begin(),coupons_fu.begin()+coupons_fu.size());
+    sort(product_fu.begin(),product_fu.begin()+product_fu.size());
+    int i=0;
+    while(cnt_1_fu--&&cnt_2_fu--)
+    {
+        max+=coupons_fu[i]*product_fu[i];
+        i++;
+    }
+    cout<<max;
+    return 0;
+}
