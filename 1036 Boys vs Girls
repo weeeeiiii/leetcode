@@ -1,0 +1,76 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+#include<string>
+#include<cmath>
+using namespace std;
+
+struct student{
+    string name;
+    string gender;
+    string ID;
+    int grade;
+};
+
+vector<student> F;
+vector<student> M;
+int N;
+bool cmpF(student a,student b)
+{
+    return a.grade>b.grade;
+}
+bool cmpM(student a,student b)
+{
+    return a.grade<b.grade;
+}
+int main()
+{
+    cin>>N;
+    for(int i=0;i<N;i++)
+    {
+        student temp;
+        cin>>temp.name>>temp.gender>>temp.ID>>temp.grade;
+        if(temp.gender=="M")
+        {
+            M.push_back(temp);
+        }
+        else
+        {
+            F.push_back(temp);
+        }
+    }
+
+    sort(F.begin(),F.begin()+F.size(),cmpF);
+    sort(M.begin(),M.begin()+M.size(),cmpM);
+    int tag=1;
+
+    if(F.size()==0)
+    {
+        tag=0;
+        cout<<"Absent"<<endl;
+    }
+    else
+    {
+        cout<<F[0].name<<" "<<F[0].ID<<endl;
+    }
+
+    if(M.size()==0)
+    {
+        tag=0;
+        cout<<"Absent"<<endl;
+    }
+    else
+    {
+        cout<<M[0].name<<" "<<M[0].ID<<endl;
+    }
+    if(tag==0)
+    {
+        cout<<"NA";
+    }
+    else
+    {
+        printf("%d",abs(M[0].grade-F[0].grade));
+    }
+    return 0;
+}
