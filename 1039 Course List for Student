@@ -1,0 +1,55 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string>
+#include<vector>
+#include<map>
+using namespace std;
+
+int N,K;
+struct student{
+    int total=0;
+    vector<int> kecheng;
+};
+map<string,student> mp;
+vector<string> list;
+int main()
+{
+    cin>>N>>K;
+    for(int i=0;i<K;i++)
+    {
+        int number,people;
+        cin>>number>>people;
+        for(int j=0;j<people;j++)
+        {
+            string temp;
+            cin>>temp;
+            mp[temp].total++;
+            mp[temp].kecheng.push_back(number);
+        }
+    }
+    for(map<string,student> ::iterator it=mp.begin();it!=mp.end();it++)
+    {
+        sort(it->second.kecheng.begin(),it->second.kecheng.begin()+it->second.kecheng.size());
+    }
+
+    for(int i=0;i<N;i++)
+    {
+        string temp;
+        cin>>temp;
+        list.push_back(temp);
+    }
+    for(int i=0;i<list.size();i++)
+    {
+        string temp=list[i];
+        cout<<temp<<" "<<mp[temp].total;
+        if(mp[temp].total!=0) cout<<" ";
+        for(int j=0;j<mp[temp].total;j++)
+        {
+            cout<<mp[temp].kecheng[j];
+            if(j<mp[temp].total-1) cout<<" ";
+        }
+        cout<<endl;
+    }
+    return 0;
+}
