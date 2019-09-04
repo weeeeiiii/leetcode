@@ -1,0 +1,44 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<string>
+using namespace std;
+
+int N;
+vector<string> v;
+bool cmp(string a,string b)
+{
+    return a+b<b+a;
+}
+int main()
+{
+    cin>>N;
+    for(int i=0;i<N;i++)
+    {
+        string temp;
+        cin>>temp;
+        v.push_back(temp);
+    }
+    sort(v.begin(),v.begin()+v.size(),cmp);
+    while(v[0][0]=='0')
+    {
+        v[0].erase(v[0].begin());
+        if(v[0].length()==0)
+        {
+            v.erase(v.begin());
+        }
+    }
+    if(v.size()==0)
+    {
+        cout<<0;
+    }
+    else
+    {
+        for(int i=0;i<v.size();i++)
+        {
+            cout<<v[i];
+        }
+    }
+    return 0;
+}
