@@ -1,0 +1,48 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string.h>
+#include<cmath>
+using namespace std;
+const int maxn=1010;
+char S[maxn];
+int ans=1;
+
+int symmetric(int start,int length)    //下标和字符串长度
+{
+    int left=start;
+    int right=length-start-1;
+    int changdu=min(left,right);
+    int jishu=1;
+    for(int i=0;i<changdu;i++)
+    {
+        if(S[start-i-1]==S[start+i+1])
+        {
+            jishu+=2;
+        }
+        else break;
+    }
+    int oushu=0;
+    for(int i=0;i<changdu+1;i++)
+    {
+        if(S[start-i]==S[start+i+1])
+        {
+            oushu+=2;
+        }
+        else break;
+    }
+
+    return max(oushu,jishu);
+}
+int main()
+{
+    cin.get(S,1010);
+    int length=strlen(S);
+    for(int i=1;i<length-1;i++)
+    {
+        int l=symmetric(i,length);
+        if(l>ans) ans=l;
+    }
+    cout<<ans;
+    return 0;
+}
