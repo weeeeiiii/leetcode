@@ -1,0 +1,65 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<string>
+using namespace std;
+
+int K;
+int number[54];
+int shunxu[54];
+void zhuanhuan()
+{
+    int temp[54];
+    for(int i=0;i<54;i++)
+    {
+        temp[i]=number[i];
+    }
+
+    for(int i=0;i<54;i++)
+    {
+        int now=shunxu[i]-1;
+        number[now]=temp[i];
+    }
+}
+int main()
+{
+    cin>>K;
+    for(int i=0;i<54;i++)
+    {
+        number[i]=i;
+    }
+    for(int i=0;i<54;i++)
+    {
+        cin>>shunxu[i];
+    }
+    while(K--)
+    {
+        zhuanhuan();
+    }
+    for(int i=0;i<54;i++)
+    {
+        int now=number[i];
+        if(now/13==0)
+        {
+            cout<<"S"<<now%13+1;
+        }
+        else if(now/13==1)
+        {
+            cout<<"H"<<now%13+1;
+        }
+        else if(now/13==2)
+        {
+            cout<<"C"<<now%13+1;
+        }
+        else if(now/13==3)
+        {
+            cout<<"D"<<now%13+1;
+        }
+        else if(now/13==4)
+        {
+            cout<<"J"<<now%13+1;
+        }
+        if(i<53) cout<<" ";
+    }
+    return 0;
+}
