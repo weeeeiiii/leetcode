@@ -1,0 +1,78 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int N,K;
+const int maxn=100010;
+vector<int> dia;
+
+struct Node{
+    int i,j;
+    int sum;
+};
+vector<Node> v;
+int dp[maxn];
+bool cmp(Node a,Node b)
+{
+    if(a.sum!=b.sum)
+    {
+        return a.sum<b.sum;
+    }
+    return a.i<b.i;
+}
+
+int erfen(int start,int end)       //strat为起始下标
+{
+    int temp=start;
+    int mid;
+    mid=(end+start)/2;
+    while(start!=end)
+    {
+        if(dp[mid]-dp[temp]<K)
+        {
+            start=mid+1;
+            mid=(end+start)/2;
+        }
+        else
+        {
+            end=mid;
+            mid=(end+start)/2;
+        }
+    }
+    return mid;
+}
+
+int main()
+{
+    cin>>N>>K;
+    dp[0]=0;
+    for(int i=0;i<N;i++)
+    {
+        int temp;
+        cin>>temp;
+        dia.push_back(temp);
+        dp[i+1]=dp[i]+temp;
+    }
+    for(int i=1;i<=N;i++)
+    {
+        int mid=erfen(i-1,N);
+        if(dp[mid]-dp[i-1]>=K)
+        {
+            Node temp;
+            temp.i=i;
+            temp.j=mid;
+            temp.sum=dp[mid]-dp[i-1];
+            v.push_back(temp);
+        }
+    }
+    sort(v.begin(),v.begin()+v.size(),cmp);
+    int minimum=v[0].sum;
+    int i=0;
+    while(v[i].sum==minimum)
+    {
+        cout<<v[i].i<<"-"<<v[i].j<<endl;
+        i++;
+    }
+    return 0;
+}
