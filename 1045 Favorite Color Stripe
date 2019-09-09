@@ -1,0 +1,58 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int total,N,K;
+int colors[210];
+vector<int> like_colors;
+vector<int> strip;
+int dp[1010];
+int main()
+{
+    cin>>total>>N;
+    int tag=1;
+    for(int i=0;i<N;i++)
+    {
+        int temp;
+        cin>>temp;
+        colors[temp]=tag++;
+        like_colors.push_back(temp);
+    }
+    cin>>K;
+    for(int i=0;i<K;i++)
+    {
+        int temp;
+        cin>>temp;
+        if(colors[temp]>0)
+        {
+            strip.push_back(temp);
+        }
+    }
+    int num=strip.size();
+    dp[strip[num-1]]=1;       //设置边界
+    for(int i=num-2;i>=0;i--)
+    {
+        int now=strip[i];
+        int max=0;
+        for(int j=i+1;j<num;j++)
+        {
+            if(colors[now]<=colors[strip[j]]&&dp[strip[j]]>max)
+            {
+                max=dp[strip[j]];
+            }
+        }
+        dp[now]=max+1;
+    }
+    int max=dp[1];
+    for(int i=1;i<=N;i++)
+    {
+        if(max<dp[i])
+        {
+            max=dp[i];
+        }
+    }
+    cout<<max;
+    return 0;
+}
