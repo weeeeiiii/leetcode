@@ -1,0 +1,50 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int N,M;
+vector<int> v;
+vector<int> m;
+int dp[100010];
+long long sum=0;
+int main()
+{
+    cin>>N;
+    dp[0]=0;
+    for(int i=0;i<N;i++)
+    {
+        int temp;
+        cin>>temp;
+        v.push_back(temp);
+        dp[i+1]=dp[i]+temp;   //dp记录每个点到第一个节点的距离
+        sum+=temp;
+    }
+    cin>>M;
+    for(int i=0;i<M;i++)
+    {
+        int start,end;
+        cin>>start>>end;
+        if(start>end)
+        {
+            int temp=start;
+            start=end;
+            end=temp;
+        }
+        long long min_1=dp[end-1]-dp[start-1];
+        long long min_2=sum-min_1;
+        if(min_1<min_2)
+        {
+            m.push_back(min_1);
+        }
+        else
+        {
+            m.push_back(min_2);
+        }
+    }
+    for(int i=0;i<M;i++)
+    {
+        cout<<m[i]<<endl;
+    }
+    return 0;
+}
