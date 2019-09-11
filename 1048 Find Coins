@@ -1,0 +1,51 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<string>
+using namespace std;
+
+int N,M;
+vector<int> v;
+int visited[100010];
+int main()
+{
+    cin>>N>>M;
+    for(int i=0;i<N;i++)
+    {
+        int temp;
+        cin>>temp;
+        if(temp>=M)
+        {
+            continue;
+        }
+        v.push_back(temp);
+        visited[temp]=1;
+    }
+    sort(v.begin(),v.begin()+v.size());
+    int num1,num2;
+    int tag=0;
+    for(int i=0;i<v.size();i++)
+    {
+        num2=M-v[i];
+        if(num2==v[i]&&v[i+1]!=num2)
+        {
+            continue;
+        }
+        if(visited[num2]==1)
+        {
+            tag=1;
+            num1=v[i];
+            break;
+        }
+    }
+    if(tag==1)
+    {
+        cout<<num1<<" "<<num2;
+    }
+    else
+    {
+        cout<<"No Solution";
+    }
+    return 0;
+}
