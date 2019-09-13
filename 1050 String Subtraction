@@ -1,0 +1,25 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string.h>
+using namespace std;
+
+char s1[10010];
+char s2[10010];
+int visited[500];
+int main()
+{
+    cin.getline(s1, sizeof(s1));
+    cin.getline(s2, sizeof(s2));
+    for(int i=0;i<strlen(s2);i++)
+    {
+        visited[(int)s2[i]]=1;
+    }
+    for(int i=0;i<strlen(s1);i++)
+    {
+        int number=int(s1[i]);
+        if(visited[number]) continue;
+        printf("%c",s1[i]);
+    }
+    return 0;
+}
