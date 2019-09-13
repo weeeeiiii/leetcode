@@ -1,0 +1,53 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<stack>
+#include<vector>
+using namespace std;
+
+int M,N,K;
+stack<int> s;
+vector<int> v;
+int main()
+{
+    cin>>M>>N>>K;
+    while(K--)
+    {
+        v.clear();
+        for(int i=0;i<N;i++)
+        {
+            int temp;
+            cin>>temp;
+            v.push_back(temp);
+        }
+        int count=1;
+        stack<int> temp;
+        s=temp;
+        s.push(count++);
+        int tag=v[0];
+        while(1)
+        {
+            if(s.size()>M||count>N+1)
+            {
+                cout<<"NO"<<endl;
+                break;
+            }
+            if(!s.empty()&&s.top()==tag)
+            {
+                s.pop();
+                v.erase(v.begin());
+                if(v.size()==0)
+                {
+                    cout<<"YES"<<endl;
+                    break;
+                }
+                tag=v[0];
+            }
+            else
+            {
+                s.push(count++);
+            }
+        }
+    }
+    return 0;
+}
