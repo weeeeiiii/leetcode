@@ -1,0 +1,47 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<algorithm>
+#include<map>
+using namespace std;
+
+map<int,int> mp;
+map<int,int> address_to_key;
+map<int,int> nex;
+int N,head;
+vector<int> v;
+int main()
+{
+    cin>>N>>head;
+    int tag=0;
+    for(int i=0;i<N;i++)
+    {
+        int address,key,next;
+        cin>>address>>key>>next;
+        if(address==head) tag=1;
+        mp[key]=address;
+        address_to_key[address]=key;
+        nex[key]=next;
+    }
+    if(tag==0)
+    {
+        cout<<0<<" "<<head;
+        return 0;
+    }
+    while(head!=-1)
+    {
+        int key=address_to_key[head];
+        v.push_back(key);
+        head=nex[key];
+    }
+    N=v.size();
+    sort(v.begin(),v.begin()+N);
+    printf("%d %05d\n",N,mp[v[0]]);
+    for(int i=0;i<N-1;i++)
+    {
+        printf("%05d %d %05d\n",mp[v[i]],v[i],mp[v[i+1]]);
+    }
+    printf("%05d %d -1",mp[v[N-1]],v[N-1]);
+    return 0;
+}
