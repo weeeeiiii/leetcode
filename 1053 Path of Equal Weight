@@ -1,0 +1,65 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<stack>
+using namespace std;
+
+int N,M;
+long long S;
+vector<long long> weight;
+vector<int> G[101];
+vector<long long> luxian;
+bool cmp(int a,int b)
+{
+        return weight[a]>weight[b];
+}
+
+void DFS(int number,long long sum)
+{
+    if(sum>S) return;
+    if(sum==S&&G[number].size()==0)
+    {
+        for(int i=0;i<luxian.size();i++)
+        {
+            cout<<luxian[i];
+            if(i<luxian.size()-1) cout<<" ";
+            else cout<<endl;
+        }
+        return;
+    }
+    for(int i=0;i<G[number].size();i++)
+    {
+        int num=G[number][i];
+        luxian.push_back(weight[num]);   //访问
+        DFS(G[number][i],sum+weight[num]);
+        luxian.pop_back();
+    }
+}
+
+
+int main()
+{
+    cin>>N>>M>>S;
+    for(int i=0;i<N;i++)
+    {
+        long long temp;
+        cin>>temp;
+        weight.push_back(temp);
+    }
+    for(int i=0;i<M;i++)
+    {
+        int num,childs;
+        cin>>num>>childs;
+        for(int j=0;j<childs;j++)
+        {
+            int temp;
+            cin>>temp;
+            G[num].push_back(temp);
+        }
+        sort(G[num].begin(),G[num].begin()+G[num].size(),cmp);
+    }
+    luxian.push_back(weight[0]);
+    DFS(0,weight[0]);
+    return 0;
+}
