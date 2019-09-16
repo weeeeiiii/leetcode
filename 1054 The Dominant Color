@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+#include<map>
+#include<string>
+using namespace std;
+
+int M,N;
+map<string,long long> mp;
+
+int main()
+{
+    cin>>M>>N;
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<M;j++)
+        {
+            string temp;
+            cin>>temp;
+            mp[temp]++;
+        }
+    }
+
+    map<string,long long> ::iterator it=mp.begin();
+    int max=it->second;
+    string m=it->first;
+    for(;it!=mp.end();it++)
+    {
+        if(max<it->second)
+        {
+            max=it->second;
+            m=it->first;
+        }
+    }
+    cout<<m;
+    return 0;
+}
