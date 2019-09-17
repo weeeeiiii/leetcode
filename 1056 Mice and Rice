@@ -1,0 +1,101 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<map>
+using namespace std;
+
+int Np,Ng;
+struct Node{
+    int weight;
+    int count=0;
+    int mingci;
+    int paiming;
+};
+vector<Node> v;
+vector<Node> xiayizu;
+map<int,int> mp;
+bool cmp1(Node a,Node b)
+{
+    return a.mingci<b.mingci;
+}
+bool cmp2(Node a,Node b)
+{
+    return a.weight>b.weight;
+}
+bool cmp3(Node a,Node b)
+{
+    return a.count>b.count;
+}
+int main()
+{
+    cin>>Np>>Ng;
+    for(int i=0;i<Np;i++)
+    {
+        Node temp;
+        cin>>temp.weight;
+        mp[temp.weight]=i;
+        v.push_back(temp);
+    }
+    for(int i=0;i<Np;i++)
+    {
+        int temp;
+        cin>>temp;
+        v[temp].mingci=i;
+    }
+    vector<Node> temp=v;
+    sort(temp.begin(),temp.begin()+Np,cmp1);
+    while(1)
+    {
+        if(temp.size()>Ng)
+        {
+            sort(temp.begin(),temp.begin()+Ng,cmp2);
+            temp[0].count++;
+            int number=mp[temp[0].weight];
+            v[number].count++;
+            xiayizu.push_back(temp[0]);
+            temp.erase(temp.begin(),temp.begin()+Ng);
+        }
+        else
+        {
+            sort(temp.begin(),temp.begin()+temp.size(),cmp2);
+            temp[0].count++;
+            int number=mp[temp[0].weight];
+            v[number].count++;
+            xiayizu.push_back(temp[0]);
+            temp.erase(temp.begin(),temp.begin()+temp.size());
+        }
+        if(temp.size()==0)
+        {
+            temp=xiayizu;
+            xiayizu.clear();
+            if(temp.size()==1)
+                break;
+        }
+    }
+    temp=v;
+    sort(temp.begin(),temp.begin()+Np,cmp3);
+    temp[0].paiming=1;
+    v[mp[temp[0].weight]].paiming=1;
+    for(int i=1;i<Np;i++)
+    {
+        if(temp[i].count==temp[i-1].count)
+        {
+            temp[i].paiming=temp[i-1].paiming;
+            int number=mp[temp[i].weight];
+            v[number].paiming=temp[i].paiming;
+        }
+        else if(temp[i].count!=temp[i-1].count)
+        {
+            temp[i].paiming=i+1;
+            int number=mp[temp[i].weight];
+            v[number].paiming=i+1;
+        }
+    }
+    for(int i=0;i<Np;i++)
+    {
+        cout<<v[i].paiming;
+        if(i<Np-1) cout<<" ";
+    }
+    return 0;
+}
