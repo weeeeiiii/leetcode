@@ -1,0 +1,82 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+string s1,s2,s3,s4;
+int main()
+{
+    cin>>s1>>s2>>s3>>s4;
+    int DAY,HH,MM;
+    int i=0;
+    int tag=0;
+    while(i<s1.length()&&i<s2.length())
+    {
+        if(s1[i]==s2[i]&&(s1[i]<='G'&&s1[i]>='A')&&tag==0)
+        {
+            DAY=s1[i]-'A';
+            tag++;
+        }
+        else if(s1[i]==s2[i]&&tag==1)
+        {
+            int wei=0;
+            if(s1[i]<='9'&&s1[i]>='0')
+            {
+                wei=1;
+                HH=s1[i]-'0';
+            }
+            else if(s1[i]<='N'&&s1[i]>='A')
+            {
+                wei=1;
+                HH=s1[i]-'A'+10;
+            }
+            if(wei==1) break;
+        }
+        i++;
+    }
+    i=0;
+    while(i<s3.length()&&i<s4.length())
+    {
+        if(s3[i]==s4[i]&&(s3[i]<='z'&&s3[i]>='a'))
+        {
+            MM=i;
+            break;
+        }
+        else if(s3[i]==s4[i]&&(s3[i]<='Z'&&s3[i]>='A'))
+        {
+            MM=i;
+            break;
+        }
+        i++;
+    }
+    if(DAY==0)
+    {
+        cout<<"MON"<<" ";
+    }
+    else if(DAY==1)
+    {
+        cout<<"TUE"<<" ";
+    }
+    else if(DAY==2)
+    {
+        cout<<"WED"<<" ";
+    }
+    else if(DAY==3)
+    {
+        cout<<"THU"<<" ";
+    }
+    else if(DAY==4)
+    {
+        cout<<"FRI"<<" ";
+    }
+    else if(DAY==5)
+    {
+        cout<<"SAT"<<" ";
+    }
+    else if(DAY==6)
+    {
+        cout<<"SUN"<<" ";
+    }
+    printf("%02d:%02d",HH,MM);
+    return 0;
+}
