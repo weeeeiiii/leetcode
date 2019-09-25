@@ -1,0 +1,43 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+
+struct Node{
+    long long Galleon;
+    long long Sickle;
+    long long Knut;
+};
+
+int main()
+{
+    Node a,b;
+    scanf("%lld.%lld.%lld",&a.Galleon,&a.Sickle,&a.Knut);
+    scanf("%lld.%lld.%lld",&b.Galleon,&b.Sickle,&b.Knut);
+    int tag=0;
+    Node temp;
+    if(a.Knut+b.Knut>=29)
+    {
+        tag=1;
+        temp.Knut=(a.Knut+b.Knut)%29;
+    }
+    else
+    {
+        tag=0;
+        temp.Knut=(a.Knut+b.Knut)%29;
+    }
+    
+    if(a.Sickle+b.Sickle+tag>=17)
+    {
+        temp.Sickle=(a.Sickle+b.Sickle+tag)%17;
+        tag=1;
+    }
+    else
+    {
+        temp.Sickle=(a.Sickle+b.Sickle+tag)%17;
+        tag=0;
+    }
+    
+    temp.Galleon=a.Galleon+b.Galleon+tag;
+    cout<<temp.Galleon<<"."<<temp.Sickle<<"."<<temp.Knut;
+    return 0;
+}
