@@ -1,0 +1,84 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+#include<string>
+using namespace std;
+
+struct Node{
+    int sage=0;
+    int nobleman=0;
+    int fool_man=0;
+    int small_man=0;
+    int talent=0;
+    int virtue=0;
+    int total=0;
+    string name;
+};
+int N,L,H;
+vector<Node> v1;
+vector<Node> v2;
+vector<Node> v3;
+vector<Node> v4;
+
+bool cmp(Node a,Node b)
+{
+    if(a.total!=b.total)
+        return a.total>b.total;
+    if(a.virtue!=b.virtue)
+        return a.virtue>b.virtue;
+    return a.name<b.name;
+}
+int main()
+{
+    cin>>N>>L>>H;
+    for(int i=0;i<N;i++)
+    {
+        Node temp;
+        cin>>temp.name>>temp.virtue>>temp.talent;
+        temp.total=temp.virtue+temp.talent;
+        if(temp.virtue<L||temp.talent<L) continue;
+        if(temp.virtue>=H&&temp.talent>=H)
+        {
+            temp.sage=1;
+            v1.push_back(temp);
+        }
+        else if(temp.talent<H&&temp.virtue>=H)
+        {
+            temp.nobleman=1;
+            v2.push_back(temp);
+        }
+        else if(temp.talent<H&&temp.virtue<H&&temp.virtue>=temp.talent)
+        {
+            temp.fool_man=1;
+            v3.push_back(temp);
+        }
+        else
+        {
+            temp.small_man=1;
+            v4.push_back(temp);
+        }
+    }
+    sort(v1.begin(),v1.begin()+v1.size(),cmp);
+    sort(v2.begin(),v2.begin()+v2.size(),cmp);
+    sort(v3.begin(),v3.begin()+v3.size(),cmp);
+    sort(v4.begin(),v4.begin()+v4.size(),cmp);
+    cout<<v1.size()+v2.size()+v3.size()+v4.size()<<endl;
+    for(int i=0;i<v1.size();i++)
+    {
+        cout<<v1[i].name<<" "<<v1[i].virtue<<" "<<v1[i].talent<<endl;
+    }
+    for(int i=0;i<v2.size();i++)
+    {
+        cout<<v2[i].name<<" "<<v2[i].virtue<<" "<<v2[i].talent<<endl;
+    }
+    for(int i=0;i<v3.size();i++)
+    {
+        cout<<v3[i].name<<" "<<v3[i].virtue<<" "<<v3[i].talent<<endl;
+    }
+    for(int i=0;i<v4.size();i++)
+    {
+        cout<<v4[i].name<<" "<<v4[i].virtue<<" "<<v4[i].talent<<endl;
+    }
+    return 0;
+}
