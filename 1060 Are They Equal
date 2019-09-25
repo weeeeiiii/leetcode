@@ -1,0 +1,77 @@
+#include<iostream>
+#include<string>
+#include<sstream>
+using namespace std;
+
+int N;
+string a,b;
+string zhuanhuan(string a)
+{
+    int weishu=0;
+    while(a[0]=='0'&&a.length()>0)
+    {
+        a.erase(a.begin());
+    }
+
+    stringstream ss;
+    int j;
+    for(j=0;j<a.length();j++)
+    {
+        if(a[j]=='.')
+        {
+            a.erase(a.begin()+j);
+            break;
+        }
+    }
+    weishu=j;
+
+    int tag=0;
+    while(a[0]=='0'&&a.length()>0)
+    {
+        tag++;
+        a.erase(a.begin());
+    }
+
+    if(tag!=0&&a.length()!=0)
+    {
+        weishu=tag;
+    }
+    if(a.length()==0) tag=0;
+
+    string wei;
+    ss<<weishu;
+    ss>>wei;
+    string temp_a;
+    for(int i=0;i<N;i++)
+    {
+        if(i>=a.length()) temp_a+='0';
+        else temp_a+=a[i];
+    }
+
+    temp_a="0."+temp_a+"*10"+"^";
+    if(tag==0)
+    {
+        temp_a+=wei;
+    }
+    else
+    {
+        temp_a=temp_a+"-"+wei;
+    }
+    return temp_a;
+}
+int main()
+{
+    cin>>N>>a>>b;
+    string temp_a,temp_b;
+    temp_a=zhuanhuan(a);
+    temp_b=zhuanhuan(b);
+    if(temp_a==temp_b)
+    {
+        cout<<"YES"<<" "<<temp_a;
+    }
+    else
+    {
+        cout<<"NO"<<" "<<temp_a<<" "<<temp_b;
+    }
+    return 0;
+}
