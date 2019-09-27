@@ -1,0 +1,107 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+typedef struct tree{
+    int num;
+    tree *left;
+    tree *right;
+}tree;
+int mirror=0,N;
+vector<int> v;
+vector<int> pre;
+vector<int> post;
+void insert(tree* &root,int num)
+{
+    if(root==NULL)
+    {
+        root=(tree *)malloc(sizeof(tree));
+        root->num=num;
+        root->left=NULL;
+        root->right=NULL;
+        return ;
+    }
+    if(num<root->num)
+        insert(root->left,num);
+    else
+        insert(root->right,num);
+}
+void preorder(tree* root)
+{
+    if(mirror==0)
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+        pre.push_back(root->num);
+        preorder(root->left);
+        preorder(root->right);
+        return ;
+    }
+    else
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+        pre.push_back(root->num);
+        preorder(root->right);
+        preorder(root->left);
+        return ;
+    }
+}
+void postorder(tree* root)
+{
+    if(mirror==1)
+    {
+        if(root==NULL) return;
+        postorder(root->right);
+        postorder(root->left);
+        post.push_back(root->num);
+        return ;
+    }
+    else
+    {
+        if(root==NULL) return;
+        postorder(root->left);
+        postorder(root->right);
+        post.push_back(root->num);
+        return ;
+    }
+}
+int main()
+{
+    cin>>N;
+    for(int i=0;i<N;i++)
+    {
+        int temp;
+        cin>>temp;
+        v.push_back(temp);
+    }
+    if(v.size()>=2&&v[0]>v[1]) mirror=0;
+    else if(v.size()>=2&&v[0]<v[1]) mirror=1;
+    tree *root=NULL;
+
+    for(int i=0;i<N;i++)
+    {
+        insert(root,v[i]);
+    }
+    preorder(root);
+    for(int i=0;i<pre.size();i++)
+    {
+        if(pre[i]!=v[i])
+        {
+            printf("NO");
+            return 0;
+        }
+    }
+    postorder(root);
+    printf("YES\n");
+    for(int i=0;i<N;i++)
+    {
+        printf("%d",post[i]);
+        if(i<N-1) cout<<" ";
+    }
+    return 0;
+}
