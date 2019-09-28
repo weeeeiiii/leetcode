@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+vector<int> inorder;
+vector<int> tree;
+int N;
+int number=1;
+
+void build(int root)
+{
+    if(root>N) return;
+    build(root*2);
+    tree[root]=inorder[number++];
+    build(root*2+1);
+}
+int main()
+{
+    cin>>N;
+    inorder.resize(N+1);
+    tree.resize(N+1);
+    for(int i=1;i<=N;i++)
+    {
+        cin>>inorder[i];
+    }
+    sort(inorder.begin(),inorder.begin()+N+1);
+    build(1);
+    for(int i=1;i<=N;i++)
+    {
+        cout<<tree[i];
+        if(i<N) cout<<" ";
+    }
+    return 0;
+}
