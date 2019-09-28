@@ -13,7 +13,7 @@ void build(int root)
 {
     if(root>N) return;
     build(root*2);
-    tree[root]=inorder[number++];
+    tree[root]=inorder[number++];    //利用这里找到完全二叉树的根结点，进行递归
     build(root*2+1);
 }
 int main()
