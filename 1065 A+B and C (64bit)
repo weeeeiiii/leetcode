@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+
+long long a,b,c,temp;
+int main()
+{
+    int N;
+    cin>>N;
+    for(int i=1;i<=N;i++)
+    {
+        cin>>a>>b>>c;
+        temp=a+b;
+        cout<<"Case #"<<i<<":"<<" ";
+        if(a>0&&b>0&&temp<=0)          //a和b都为正，且发生正溢出
+        {
+            cout<<"true"<<endl;
+        }
+        else if(a<0&&b<0&&temp>=0)     //发生负溢出
+        {
+            cout<<"false"<<endl;
+        }
+        else if(temp>c) cout<<"true"<<endl;
+        else cout<<"false"<<endl;
+    }
+    return 0;
+}
