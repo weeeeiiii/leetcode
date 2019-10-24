@@ -1,0 +1,40 @@
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+using namespace std;
+
+int a[4];
+void zhuanhuan(int n)
+{
+    a[0]=n%10;
+    n=n/10;
+    a[1]=n%10;
+    n=n/10;
+    a[2]=n%10;
+    n=n/10;
+    a[3]=n%10;
+    n=n/10;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    if(n%1111==0)
+    {
+        printf("%04d - %04d = %04d\n",n,n,0);
+        return 0;
+    }
+    zhuanhuan(n);
+    sort(a,a+4);
+    while(1)
+    {
+        int n1,n2;
+        n1=a[3]*1000+a[2]*100+a[1]*10+a[0];
+        n2=a[0]*1000+a[1]*100+a[2]*10+a[3];
+        printf("%04d - %04d = %04d\n",n1,n2,n1-n2);
+        if(n1-n2==6174) break;
+        zhuanhuan(n1-n2);
+        sort(a,a+4);
+    }
+    return 0;
+}
