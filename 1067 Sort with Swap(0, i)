@@ -1,0 +1,42 @@
+#include <iostream>
+#include <cmath>
+#include <cstdio>
+using namespace std;
+const int maxn=100010;
+int main()
+{
+    int n,cnt=0;
+    int  a[maxn],b[maxn];
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",a+i);
+        b[a[i]]=i;
+    }
+
+    while(1)
+    {
+        if(a[0]==0)     //如果0回到原位
+        {
+            int i=0;
+            while(a[i]==i&&i<n)   //找到第一个不在原位的数
+            {
+                i++;
+            }
+            if(i==n) break;
+            swap(b[a[i]],b[0]);
+            swap(a[0],a[i]);
+            cnt++;
+        }
+        else
+        {
+            int position_0=b[0];    //找到0所在的位置
+            int position_n=b[b[0]];   //找到该位置对应的数所在的位置
+            swap(a[position_0],a[position_n]);
+            swap(b[b[0]],b[0]);
+            cnt++;
+        }
+    }
+    cout<<cnt;
+    return 0;
+}
