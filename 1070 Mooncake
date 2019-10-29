@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct yuebing{
+    double tons;
+    double price;
+    double xingjiabi;
+};
+bool cmp(yuebing a,yuebing b)
+{
+    return a.xingjiabi>b.xingjiabi;
+}
+int N;
+double D;
+vector<yuebing> v;
+int main()
+{
+    cin>>N>>D;
+    v.resize(N);
+    for(int i=0;i<N;i++)
+    {
+        cin>>v[i].tons;
+    }
+    for(int i=0;i<N;i++)
+    {
+        cin>>v[i].price;
+        v[i].xingjiabi=v[i].price/v[i].tons;
+    }
+
+    sort(v.begin(),v.begin()+N,cmp);
+    double profit=0;
+    for(int i=0;i<N;i++)
+    {
+        if(D==0) break;
+        if(D>=v[i].tons)
+        {
+            D=D-v[i].tons;
+            profit+=v[i].price;
+        }
+        else if(D<v[i].tons)
+        {
+            profit=profit+D*1.0/v[i].tons*v[i].price;
+            D=0;
+        }
+    }
+    printf("%.2f",profit);
+    return 0;
+}
