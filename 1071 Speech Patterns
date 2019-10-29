@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstdio>
+#include <string.h>
+#include <map>
+#include <vector>
+#include <string>
+using namespace std;
+
+int panduan(char ch)
+{
+    if(ch<='9'&&ch>='0') return 1;
+    if(ch<='z'&&ch>='a') return 1;
+    if(ch<='Z'&&ch>='A') return 1;
+    return 0;
+}
+string test;
+map<string,int> mp;
+int main()
+{
+    getline(cin,test);
+    int length=test.length();
+    for(int i=0;i<length;i++)
+    {
+        string temp="";
+        int tag=0;
+        while(panduan(test[i]))
+        {
+            tag=1;
+            if(test[i]<='Z'&&test[i]>='A')
+            {
+                test[i]=test[i]+'a'-'A';
+            }
+            temp+=test[i];
+            i++;
+        }
+        if(tag==1) mp[temp]++;
+    }
+    map<string,int> ::iterator it=mp.begin();
+    int max=0;
+    string maxline;
+    for(;it!=mp.end();it++)
+    {
+        if(it->second>max)
+        {
+            max=it->second;
+            maxline=it->first;
+        }
+    }
+    cout<<maxline<<" "<<max;
+    return 0;
+}
