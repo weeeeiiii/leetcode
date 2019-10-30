@@ -1,0 +1,117 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+const int maxn=1020;
+const int INF=100000;
+int N,M,K,D;
+int G[maxn][maxn];
+int d[maxn];
+
+int getID(string a)
+{
+    int i=0,len = a.length(),ID = 0;
+    while(i < len){
+        if(a[i] != 'G'){
+            ID = ID * 10 + (a[i] - '0');
+        }
+        i++;
+    }
+    if(a[0] == 'G') return N+ID;
+    else return ID;
+}
+
+void dijiestra(int s)
+{
+    fill(d,d+maxn,INF);
+    bool vis[maxn]={false};
+    d[s]=0;
+    for(int i=1;i<=N+M;i++)
+    {
+        int u=-1,min=INF;
+        for(int j=1;j<=N+M;j++)
+        {
+            if(vis[j]== false&&d[j]<min)
+            {
+                u=j;
+                min=d[j];
+            }
+        }
+        if(u==-1) return;
+        vis[u]=true;
+        for(int v=1;v<=N+M;v++)
+        {
+            if(vis[v]==false&&G[u][v]!=INF)
+            {
+                if(d[v]>d[u]+G[u][v])
+                {
+                    d[v]=d[u]+G[u][v];
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    cin>>N>>M>>K>>D;
+    fill(G[0],G[0]+maxn*maxn,INF);
+    string temp1,temp2;
+    int dist,v,w;
+    for(int i=0;i<K;i++)
+    {
+        cin>>temp1>>temp2>>dist;
+        v=getID(temp1);
+        w=getID(temp2);
+        G[v][w]=dist;
+        G[w][v]=dist;
+    }
+    double min_DIS=0;
+    double avg_DIS=INF;
+    int min_ID=-1;
+    for(int i=N+1;i<=N+M;i++)
+    {
+        dijiestra(i);
+        int tag=1;
+        double min_DIS_2=d[1];
+        double avg_DIS_2=0;
+        for(int j=1;j<=N;j++)
+        {
+            if(d[j]<=D)
+            {
+                avg_DIS_2+=d[j];         //加上平均值
+                if(min_DIS_2>d[j]) min_DIS_2=d[j];    //切换到最小值
+            }
+            else
+            {
+                tag=0;
+                break;
+            }
+        }
+        if(tag==1)     //加油站符合条件
+        {
+            if(min_DIS<min_DIS_2)   //选取最小距离最大的
+            {
+                min_DIS=min_DIS_2;
+                avg_DIS=avg_DIS_2/N;
+                min_ID=i;
+                continue;
+            }
+            if(min_DIS==min_DIS_2&&avg_DIS>(avg_DIS_2/N))
+            {
+                avg_DIS=avg_DIS_2/N;
+                min_DIS=min_DIS_2;
+                min_ID=i;
+            }
+        }
+    }
+    if(min_ID==-1)
+    {
+        cout<<"No Solution";
+    }
+    else
+    {
+        cout<<"G"<<min_ID-N<<endl;
+        printf("%.1f %.1f",min_DIS,avg_DIS);
+    }
+    return 0;
+}
