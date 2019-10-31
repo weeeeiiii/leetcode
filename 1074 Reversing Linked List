@@ -1,0 +1,47 @@
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Node{
+    int address;
+    int data;
+    int next;
+};
+Node wei[100000];
+int main()
+{
+    int begin,N,K;
+    cin>>begin>>N>>K;
+    for(int i=0;i<N;i++)        //存储信息
+    {
+        int add,data,next;
+        cin>>add>>data>>next;
+        wei[add].address=add;
+        wei[add].data=data;
+        wei[add].next=next;
+    }
+    vector<Node> v;
+    while(1)                    //提取全部信息
+    {
+        if(begin==-1) break;
+        v.push_back(wei[begin]);
+        begin=wei[begin].next;
+        if(begin==-1) break;
+    }
+    N=v.size();            //有些节点不在链表中
+    int i=0;
+    while(i+K<=N)
+    {
+        reverse(v.begin()+i,v.begin()+i+K);
+        i+=K;
+    }
+    for(int i=0;i<N;i++)
+    {
+        if(i!=0) printf("%05d\n",v[i].address);
+        printf("%05d %d ",v[i].address,v[i].data);
+    }
+    printf("-1");
+    return 0;
+}
