@@ -1,0 +1,84 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <map>
+using namespace std;
+
+int N,K,M;
+struct stu{
+    int tag=0;             //区分提交未过的人或从未提交的人
+    int name;
+    int progress[5]={-1,-1,-1,-1,-1};
+    bool shifoutijiao[5]={false,false,false,false,false};
+    int sum=0;               //总得分
+    int solve_problems=0;  //总解决问题数
+};
+int mark[5];         //各题的满分
+vector<stu> v;
+
+bool cmp(stu a,stu b)
+{
+    if(a.tag!=b.tag)
+    {
+        return a.tag>b.tag;
+    }
+    if(a.sum!=b.sum)
+    {
+        return a.sum>b.sum;
+    }
+    if(a.solve_problems!=b.solve_problems)
+    {
+        return a.solve_problems>b.solve_problems;
+    }
+    return a.name<b.name;
+}
+int main()
+{
+    cin>>N>>K>>M;
+    v.resize(N+1);
+    for(int i=0;i<K;i++)
+    {
+        cin>>mark[i];     //记录各题的满分
+    }
+    for(int i=0;i<M;i++)
+    {
+        int name;
+        int number,m;
+        cin>>name>>number>>m;
+        v[name].name=name;
+        v[name].shifoutijiao[number-1]=true;
+        if(v[name].progress[number-1]<m)     //此次提交大于先前的分数
+        {
+            v[name].tag=1;                   //标记提交有效
+            if(v[name].progress[number-1]==-1)
+            {
+                v[name].sum=v[name].sum+m; //更新总分数
+            }
+            else v[name].sum=v[name].sum-v[name].progress[number-1]+m; //更新总分数
+            v[name].progress[number-1]=m;
+            if(m==mark[number-1]) v[name].solve_problems++;   //如果为满分,则++
+        }
+    }
+    sort(v.begin()+1,v.begin()+N+1,cmp);
+    int i=0;
+    int mingci;
+    while(++i&&i<N+1)
+    {
+        if(v[i].sum!=v[i-1].sum) mingci=i;
+        printf("%d %05d %d ",mingci,v[i].name,v[i].sum);
+        for(int j=0;j<K;j++)
+        {
+            if(v[i].shifoutijiao[j]==false) printf("-");
+            else if(v[i].shifoutijiao[j]==true&&v[i].progress[j]==-1)
+            {
+                printf("0");
+            }
+            else printf("%d",v[i].progress[j]);
+            if(j<K-1) printf(" ");
+        }
+        printf("\n");
+        if(v[i+1].tag==0) break;
+    }
+    return 0;
+}
