@@ -1,0 +1,100 @@
+#include <iostream>
+#include <cstdio>
+#include <string>
+using namespace std;
+
+struct Node{
+    string fuhao_1;
+    string data1;
+    string data2;
+    string fuhao_2;
+    string data3;
+};
+Node wei;
+void zhuanhuan(string a)
+{
+    if(a[0]=='+') wei.fuhao_1='+';
+    else wei.fuhao_1='-';
+    int i=1;
+    while(a[i]!='.')
+    {
+        wei.data1+=a[i];
+        i++;
+    }
+    i++;
+    while(a[i]!='E')
+    {
+        wei.data2+=a[i];
+        i++;
+    }
+    i++;
+    if(a[i]=='+') wei.fuhao_2='+';
+    else wei.fuhao_2='-';
+    i++;
+    while(i<a.length())
+    {
+        wei.data3+=a[i];
+        i++;
+    }
+
+}
+int get_numebr(string s)
+{
+    int n=0,i=0;
+    while(i<s.length())
+    {
+        n=n*10+s[i]-'0';
+        i++;
+    }
+    return n;
+}
+int main()
+{
+    string n;
+    cin>>n;
+    zhuanhuan(n);
+    if(wei.fuhao_1=="-") cout<<wei.fuhao_1;
+    if(wei.fuhao_2=="-")
+    {
+        int n=get_numebr(wei.data3);
+        cout<<"0"<<".";
+        n--;
+        while(n>0)
+        {
+            cout<<0;
+            n--;
+        }
+        cout<<wei.data1<<wei.data2;
+    }
+    else
+    {
+        int n=get_numebr(wei.data3);
+        if(n>=wei.data2.length())
+        {
+            cout<<wei.data1<<wei.data2;
+            while(n-wei.data2.length())
+            {
+                cout<<"0";
+                n--;
+            }
+        }
+        else
+        {
+            cout<<wei.data1;
+            int num=wei.data2.length()-n;
+            int i=0;
+            while(num--)
+            {
+                cout<<wei.data2[i];
+                i++;
+            }
+            cout<<wei.data2[i++];
+            cout<<".";
+            while(i<wei.data2.length())
+            {
+                cout<<wei.data2[i];
+                i++;
+            }
+        }
+    }
+}
