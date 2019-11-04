@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int N;
+double P,r;
+
+struct Node{
+    int tag=0;       //记录是否为零售商
+    double price;  //记录当前的价格
+    vector<int> v; //记录与之相邻的结点
+};
+
+Node a[100010];
+double sum=0;
+
+void DFS(int father,int number)
+{
+    if(a[number].tag==0)
+    {
+        a[number].price=a[father].price*(1+r/100);
+        for(int i=0;i<a[number].v.size();i++)
+        {
+            DFS(number,a[number].v[i]);
+        }
+    }
+    else
+    {
+        a[number].price=a[father].price*(1+r/100);
+        sum+=a[number].price*a[number].tag;
+    }
+}
+
+
+int main()
+{
+    cin>>N>>P>>r;
+    for(int i=0;i<N;i++)
+    {
+        int num;
+        cin>>num;
+        if(num==0)
+        {
+            cin>>a[i].tag;
+        }
+        else if(num!=0)
+        {
+            a[i].tag=0;       //不是零售商
+            for(int j=0;j<num;j++)
+            {
+                int temp;
+                cin>>temp;
+                a[i].v.push_back(temp);
+            }
+        }
+    }
+    a[0].price=P;
+    if(N==1)
+    {
+        printf("%.1f",a[0].price*a[0].tag);
+        return 0;
+    }
+    for(int i=0;i<a[0].v.size();i++)
+    {
+        DFS(0,a[0].v[i]);
+    }
+    printf("%.1f",sum);
+    return 0;
+}
