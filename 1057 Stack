@@ -1,0 +1,81 @@
+#include <iostream>
+#include <stack>
+#include <set>
+#include <string>
+using namespace std;
+
+stack<int> s;
+multiset<int> upper;
+multiset<int,greater<int>> lower;
+int mid,n;
+
+void adjust()
+{
+    if(upper.size()==lower.size())
+    {
+        mid=*lower.begin();
+    }
+    else if(upper.size()>lower.size())
+    {
+        int temp=*upper.begin();
+        upper.erase(upper.begin());
+        lower.insert(temp);
+        mid=*lower.begin();
+    }
+    else if(lower.size()==(upper.size()+1))
+    {
+        mid=*lower.begin();
+    }
+    else if(lower.size()==(upper.size()+2))
+    {
+        int temp=*lower.begin();
+        lower.erase(lower.begin());
+        upper.insert(temp);
+        mid=*lower.begin();
+    }
+}
+int main()
+{
+    cin>>n;
+    mid=0;
+    for(int i=0;i<n;i++)
+    {
+        string temp;
+        cin>>temp;
+        if((temp=="Pop"&&s.size()==0)||(temp=="PeekMedian"&&s.size()==0))
+        {
+            printf("Invalid\n");
+            continue;
+        }
+        if(temp=="Push")
+        {
+            int num;
+            cin>>num;
+            s.push(num);
+            if(num>mid) upper.insert(num);
+            else lower.insert(num);
+            adjust();
+        }
+        else if(temp=="Pop")
+        {
+            int temp_num=s.top();
+            s.pop();
+            if(temp_num>*lower.begin())
+            {
+                upper.erase(upper.find(temp_num));
+            }
+            else
+            {
+                lower.erase(lower.find(temp_num));
+            }
+            printf("%d\n",temp_num);
+            if(s.empty()) mid=0;
+            else adjust();
+        }
+        else if(temp=="PeekMedian")
+        {
+            printf("%d\n",mid);
+        }
+    }
+    return 0;
+}
