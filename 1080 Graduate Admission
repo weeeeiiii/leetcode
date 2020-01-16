@@ -1,0 +1,106 @@
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int N,M,K;
+struct student{
+    int Ge,Gi,total;
+    vector<int> k;
+    int rank;
+    int number;
+};
+struct school{
+    vector<int> stud;
+    int qua;
+    int min_rank;
+};
+bool cmp(student a,student b)
+{
+    if(a.total!=b.total)
+        return a.total>b.total;
+    else
+        return a.Ge>b.Ge;
+}
+bool cmp2(int a,int b)
+{
+    return a<b;
+}
+
+int main()
+{
+    cin>>N>>M>>K;
+    vector<school> sch;
+    vector<student> stu;
+    sch.resize(M);
+    stu.resize(N);
+    for(int i=0;i<M;i++)
+    {
+        cin>>sch[i].qua;
+    }
+
+    for(int i=0;i<N;i++)
+    {
+        cin>>stu[i].Ge>>stu[i].Gi;
+        stu[i].total=stu[i].Ge+stu[i].Gi;
+        for(int j=0;j<K;j++)
+        {
+            int temp;
+            cin>>temp;
+            stu[i].k.push_back(temp);
+            stu[i].number=i;
+        }
+    }
+    sort(stu.begin(),stu.begin()+N,cmp);
+    for(int i=0;i<N;i++)
+    {
+        if(i==0)
+        {
+            stu[i].rank=1;
+            continue;
+        }
+        if(stu[i].total==stu[i-1].total&&stu[i].Ge==stu[i-1].Ge)
+        {
+            stu[i].rank=stu[i-1].rank;
+        }
+        else
+        {
+            stu[i].rank=i+1;
+        }
+    }
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<K;j++)
+        {
+            int tag=0;
+            int wanted_number=stu[i].k[j];   //想要申请的学校号码
+            int peple_number=sch[wanted_number].qua-sch[wanted_number].stud.size(); //这个学校剩余的申请人数
+            if(peple_number<=0)
+            {
+                if(stu[i].rank==sch[wanted_number].min_rank)
+                {
+                    sch[wanted_number].stud.push_back(stu[i].number);
+                    tag=1;
+                }
+            }
+            else
+            {
+                sch[wanted_number].min_rank=stu[i].rank;
+                sch[wanted_number].stud.push_back(stu[i].number);
+                tag=1;
+            }
+            if(tag==1) break;
+        }
+    }
+    for(int i=0;i<M;i++)
+    {
+        sort(sch[i].stud.begin(),sch[i].stud.begin()+sch[i].stud.size(),cmp2);
+        for(int j=0;j<sch[i].stud.size();j++)
+        {
+            printf("%d",sch[i].stud[j]);
+            if(j<sch[i].stud.size()-1) printf(" ");
+        }
+        printf("\n");
+    }
+    return 0;
+}
