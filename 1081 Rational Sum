@@ -1,0 +1,105 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+struct Node{
+    long long numerator;
+    long long denominator;
+    int sign;
+};
+vector<Node> v;
+long long gcd(long long a, long long b)
+{
+    return b == 0 ? a : gcd(b, a%b);
+}
+Node fenli(string a)
+{
+    Node temp;
+    int length=0;
+    if(a[0]=='-')
+    {
+        temp.sign=-1;
+        length=1;
+    }
+    else temp.sign=1;
+    long long num=0,denom=0;
+    while(a[length]!='/')
+    {
+        int n=a[length]-'0';
+        num=num*10+n;
+        length++;
+    }
+    length++;
+    while(length<a.size())
+    {
+        int n=a[length]-'0';
+        denom=denom*10+n;
+        length++;
+    }
+    temp.numerator=num;
+    temp.denominator=denom;
+    return temp;
+}
+Node jianhua(Node a)
+{
+    long long min_x=gcd(a.numerator,a.denominator);
+    Node temp;
+    temp.sign=a.sign;
+    temp.numerator=a.numerator/min_x;
+    temp.denominator=a.denominator/min_x;
+    return temp;
+}
+Node jisuan(Node a,Node b)
+{
+    long long denom=a.denominator*b.denominator;
+    long long num=a.sign*a.numerator*b.denominator+b.sign*b.numerator*a.denominator;
+    Node temp;
+    temp.numerator=num;
+    temp.denominator=denom;
+    if(num<0)
+    {
+        temp.sign=-1;
+        temp.numerator=-temp.numerator;
+    }
+    else temp.sign=1;
+    return jianhua(temp);
+}
+int main()
+{
+    int N;
+    cin>>N;
+    for(int i=0;i<N;i++)
+    {
+        string a;
+        cin>>a;
+        v.push_back(fenli(a));
+    }
+    Node temp=v[0];
+    for(int i=1;i<N;i++)
+    {
+        temp=jisuan(temp,v[i]);
+    }
+    if(temp.denominator==1)
+    {
+        cout<<temp.sign*temp.numerator;
+    }
+    else if(temp.numerator>temp.denominator)
+    {
+        cout<<temp.sign*temp.numerator/temp.denominator<<" "<<temp.numerator%temp.denominator<<"/"<<temp.denominator;
+
+    }
+    else
+    {
+        if(temp.numerator==0)
+        {
+            cout<<0;
+
+        }
+        else cout<<temp.sign*temp.numerator%temp.denominator<<"/"<<temp.denominator;
+    }
+
+    return 0;
+}
