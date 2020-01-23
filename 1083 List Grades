@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct stu{
+    string name;
+    string ID;
+    int grade;
+};
+vector<stu> v;
+bool cmp(stu a,stu b)
+{
+    return a.grade>b.grade;
+}
+
+int main()
+{
+    int N;
+    cin>>N;
+    vector<stu> t;
+    int low,high;
+    for(int i=0;i<N;i++)
+    {
+        stu temp;
+        cin>>temp.name>>temp.ID>>temp.grade;
+        t.push_back(temp);
+    }
+    cin>>low>>high;
+    for(int i=0;i<N;i++)
+    {
+        if(t[i].grade<=high&&t[i].grade>=low)
+        {
+            v.push_back(t[i]);
+        }
+    }
+    if(v.size()==0)
+    {
+        cout<<"NONE";
+        return 0;
+    }
+    sort(v.begin(),v.begin()+v.size(),cmp);
+    for(int i=0;i<v.size();i++)
+    {
+        cout<<v[i].name<<" "<<v[i].ID<<endl;
+    }
+    return 0;
+}
