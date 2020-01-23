@@ -37,7 +37,7 @@ int main()
         {
             if(length<s.size()&&s[length-1]=='0'&&s[length]!='0')
             {
-                cout<<" "<<"ling";
+                if(now-j!=0)  cout<<" "<<"ling";
                 length++;
                 continue;
             }
