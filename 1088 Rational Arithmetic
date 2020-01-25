@@ -1,0 +1,167 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+struct Node{
+    long long fenmu=0;
+    long long fenzi=0;
+    int sign;       //符号
+};
+
+long long gcd(long long a,long long b)
+{
+    return b==0?a:gcd(b,a%b);
+}
+
+Node fenli(string a)
+{
+    Node temp;
+    if(a[0]=='-') {
+        temp.sign = -1;
+        a.erase(a.begin());
+    }
+    else temp.sign=1;
+    int length=0;
+    while(a[length]!='/')
+    {
+        temp.fenzi=temp.fenzi*10+a[length]-'0';
+        length++;
+    }
+    length++;
+    while(length<a.size())
+    {
+        temp.fenmu=temp.fenmu*10+a[length]-'0';
+        length++;
+    }
+    return temp;
+}
+
+void shuchu(Node a,long long zhengshu_a)
+{
+    if(a.fenzi==0)     //如果分子为0
+    {
+        if(a.sign==1) cout<<zhengshu_a;
+        else
+        {
+            cout<<"(";
+            cout<<zhengshu_a;
+            cout<<")";
+        }
+    }
+    else
+    {
+        if(a.sign==-1) cout<<"(";
+        if(zhengshu_a!=0)
+        {
+            cout<<zhengshu_a<<" "<<a.fenzi<<"/"<<a.fenmu;
+        }
+        else
+        {
+            cout<<a.sign*a.fenzi<<"/"<<a.fenmu;
+        }
+        if(a.sign==-1) cout<<")";
+    }
+}
+int main()
+{
+    string d1,d2;
+    cin>>d1>>d2;
+    Node a=fenli(d1);
+    Node b=fenli(d2);
+
+    Node temp1=a,temp2=b;
+    long long zhengshu_a=a.sign*(a.fenzi/a.fenmu);
+    long long zhengshu_b=b.sign*(b.fenzi/b.fenmu);
+    a.fenzi=abs(a.fenzi-a.fenmu*zhengshu_a*a.sign);
+    b.fenzi=abs(b.fenzi-b.fenmu*zhengshu_b*b.sign);
+    int a_gcd,b_gcd;
+    a_gcd=gcd(a.fenzi,a.fenmu);
+    b_gcd=gcd(b.fenzi,b.fenmu);
+    a.fenzi=a.fenzi/a_gcd;
+    a.fenmu=a.fenmu/a_gcd;
+    b.fenzi=b.fenzi/b_gcd;
+    b.fenmu=b.fenmu/b_gcd;
+
+    for(int i=0;i<4;i++)
+    {
+        shuchu(a,zhengshu_a);
+        if(i==0)
+        {
+            cout<<" "<<"+"<<" ";
+            shuchu(b,zhengshu_b);
+            cout<<" "<<"="<<" ";
+            Node temp;
+            temp.fenmu=temp1.fenmu*temp2.fenmu;
+            temp.fenzi=temp1.sign*temp1.fenzi*temp2.fenmu+temp2.sign*temp2.fenzi*temp1.fenmu;
+            if(temp.fenzi<0) temp.sign=-1;
+            else temp.sign=1;
+            long long g=gcd(temp.fenzi,temp.fenmu);
+            temp.fenzi=temp.fenzi/g;
+            temp.fenmu=abs(temp.fenmu/g);
+            long long zhengshu_temp=temp.sign*(temp.fenzi/temp.fenmu);
+            temp.fenzi=abs(temp.fenzi-temp.fenmu*zhengshu_temp*temp.sign);
+            shuchu(temp,zhengshu_temp);
+            cout<<endl;
+        }
+        else if(i==1)
+        {
+            cout<<" "<<"-"<<" ";
+            shuchu(b,zhengshu_b);
+            cout<<" "<<"="<<" ";
+            Node temp;
+            temp.fenmu=temp1.fenmu*temp2.fenmu;
+            temp.fenzi=temp1.sign*temp1.fenzi*temp2.fenmu-temp2.sign*temp2.fenzi*temp1.fenmu;
+            if(temp.fenzi<0) temp.sign=-1;
+            else temp.sign=1;
+            long long g=gcd(temp.fenzi,temp.fenmu);
+            temp.fenzi=temp.fenzi/g;
+            temp.fenmu=abs(temp.fenmu/g);
+            long long zhengshu_temp=temp.sign*(temp.fenzi/temp.fenmu);
+            temp.fenzi=abs(temp.fenzi-temp.fenmu*zhengshu_temp*temp.sign);
+            shuchu(temp,zhengshu_temp);
+            cout<<endl;
+        }
+        else if(i==2)
+        {
+            cout<<" "<<"*"<<" ";
+            shuchu(b,zhengshu_b);
+            cout<<" "<<"="<<" ";
+            Node temp;
+            temp.fenmu=temp1.fenmu*temp2.fenmu;
+            temp.fenzi=temp1.fenzi*temp2.fenzi;
+            temp.sign=temp1.sign*temp2.sign;
+            long long g=gcd(temp.fenzi,temp.fenmu);
+            temp.fenzi=temp.fenzi/g;
+            temp.fenmu=abs(temp.fenmu/g);
+            long long zhengshu_temp=temp.sign*(temp.fenzi/temp.fenmu);
+            temp.fenzi=abs(temp.fenzi-temp.fenmu*zhengshu_temp*temp.sign);
+            shuchu(temp,zhengshu_temp);
+            cout<<endl;
+        }
+        else if(i==3)
+        {
+            cout<<" "<<"/"<<" ";
+            shuchu(b,zhengshu_b);
+            cout<<" "<<"="<<" ";
+            if(temp2.fenzi==0)
+            {
+                cout<<"Inf";
+                return 0;
+            }
+            Node temp;
+            temp.fenmu=temp1.fenmu*temp2.fenzi;
+            temp.fenzi=temp1.fenzi*temp2.fenmu;
+            temp.sign=temp1.sign*temp2.sign;
+            long long g=gcd(temp.fenzi,temp.fenmu);
+            temp.fenzi=temp.fenzi/g;
+            temp.fenmu=abs(temp.fenmu/g);
+            long long zhengshu_temp=temp.sign*(temp.fenzi/temp.fenmu);
+            temp.fenzi=abs(temp.fenzi-temp.fenmu*zhengshu_temp*temp.sign);
+            shuchu(temp,zhengshu_temp);
+            cout<<endl;
+        }
+    }
+    return 0;
+}
