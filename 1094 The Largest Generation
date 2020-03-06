@@ -1,0 +1,59 @@
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node{
+    int number;
+    vector<int> children;
+};
+vector<Node> v;
+int N,K;
+int level[110];
+void DFS(int number,int lev)
+{
+    level[lev]++;
+    for(int i=0;i<v[number].children.size();i++)
+    {
+        DFS(v[number].children[i],lev+1);
+    }
+}
+
+int main()
+{
+    cin>>N>>K;
+    v.resize(N+1);
+    for(int i=1;i<=N;i++)
+    {
+        v[i].number=i;
+    }
+
+    for(int i=0;i<K;i++)
+    {
+        int temp1,temp2;
+        cin>>temp1>>temp2;
+        for(int j=0;j<temp2;j++)
+        {
+            int temp3;
+            cin>>temp3;
+            v[temp1].children.push_back(temp3);
+        }
+    }
+
+    DFS(1,1);
+
+    int max=level[1];
+    int max_lev=1;
+    for(int i=2;i<=N;i++)
+    {
+        if(max<level[i])
+        {
+            max=level[i];
+            max_lev=i;
+        }
+    }
+
+    cout<<max<<" "<<max_lev;
+    return 0;
+}
