@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+struct Node{
+    int left_p=0;
+    int xiabiao;
+};
+vector<Node> v;
+int num_T[100010];  //记录下标num之后的T数量
+int main()
+{
+    string s;
+    cin>>s;
+    while(s[0]!='P')
+    {
+        s.erase(s.begin());
+    }
+    int num_p=0;
+
+    int num_t=0;
+    for(int i=s.length()-1;i>=0;i--)
+    {
+        if(s[i]=='T') num_t++;
+        num_T[i]=num_t;
+    }
+
+    for(int i=0;i<s.length();i++)
+    {
+        if(s[i]=='P')
+        {
+            num_p++;
+        }
+        else if(s[i]=='A')
+        {
+            Node temp;
+            if(v.size()!=0)
+            {
+                temp.left_p=num_p+v[v.size()-1].left_p;
+            }
+            else temp.left_p=num_p;
+            temp.xiabiao=i;
+            num_p=0;
+            v.push_back(temp);
+        }
+    }
+
+    long long ans=0;
+    for(int i=0;i<v.size();i++)
+    {
+        long long temp=(v[i].left_p*num_T[v[i].xiabiao])%1000000007;
+        ans+=temp;
+        ans=ans%1000000007;
+    }
+    cout<<ans;
+    return 0;
+}
