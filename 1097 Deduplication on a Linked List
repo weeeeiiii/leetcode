@@ -4,64 +4,68 @@
 using namespace std;
 
 struct Node{
-    int add,key,next;
-    int order;
+    int add;
+    int key;
+    int next;
 };
 
 vector<Node> v;   //存放被删除的表
 int start,N;
 Node list[100010];
 int visited[10010];
-
-bool cmp(Node a,Node b)
-{
-    return a.order<b.order;
-}
-
 int main()
 {
     cin>>start>>N;
-    for(int i=0;i<100010;i++)
-    {
-        list[i].order=2*100010;
-    }
     for(int i=0;i<N;i++)
     {
-        int add,key,next;
-        scanf("%d%d%d",&add,&key,&next);
+        int add,k,nex;
+        scanf("%d%d%d",&add,&k,&nex);
         list[add].add=add;
-        list[add].key=key;
-        list[add].next=next;
-        list[add].order=2*100010;
+        list[add].key=k;
+        list[add].next=nex;
     }
 
-    int count_valid=0,count_removed=0;
+    int tag=0;
     while(start!=-1)
     {
         if(visited[abs(list[start].key)]==0)
         {
             visited[abs(list[start].key)]=1;
-            list[start].order=count_valid++;
+            if(tag==0)
+            {
+                printf("%05d %d ",list[start].add,list[start].key);
+                tag++;
+            }
+            else
+            {
+                printf("%05d\n",list[start].add);
+                printf("%05d %d ",list[start].add,list[start].key);
+            }
         }
         else
         {
-            list[start].order=100010+count_removed++;
+            v.push_back(list[start]);
         }
         start=list[start].next;
     }
-    int number=count_removed+count_valid;
+    printf("-1\n");
 
-    sort(list,list+100010,cmp);
-    for(int i=0;i<number;i++)
+
+    if(v.size()!=0)
     {
-        if(i<number-1&&i!=count_valid-1)
+        for(int i=0;i<v.size();i++)
         {
-            printf("%05d %d %05d\n",list[i].add,list[i].key,list[i+1].add);
+            if(i==0)
+            {
+                printf("%05d %d ",v[i].add,v[i].key);
+            }
+            else
+            {
+                printf("%05d\n",v[i].add);
+                printf("%05d %d ",v[i].add,v[i].key);
+            }
         }
-        else
-        {
-            printf("%05d %d -1\n",list[i].add,list[i].key);
-        }
+        printf("-1\n");
     }
     return 0;
 }
