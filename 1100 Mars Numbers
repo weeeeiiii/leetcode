@@ -1,0 +1,128 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <map>
+using namespace std;
+
+int n;
+vector<string> v;
+map<int,string> mp;
+map<string,int> mp2;
+string Earth_Mars[25] = {
+"tret","jan","feb","mar","apr","may","jun","jly","aug","sep","oct","nov","dec",
+
+"tam","hel","maa","huh","tou","kes","hei","elo","syy","lok","mer","jou" };
+void transform(string s)
+{
+    if(s[0]<='9'&&s[0]>='0') //为数字
+    {
+        if(s[0]=='0')
+        {
+            cout<<"tret"<<endl;
+            return;
+        }
+        int temp=s[0]-'0';
+        for(int i=1;i<s.size();i++)
+        {
+            temp=temp*10+s[i]-'0';
+        }
+        int shang=temp/13;
+        int yushu=temp%13;
+        if(shang!=0)
+        {
+            cout<<Earth_Mars[12+shang];
+            if(yushu!=0)  cout<<" ";
+        }
+        if(yushu!=0) cout<<mp[yushu];
+        cout<<endl;
+    }
+    else
+    {
+        string temp;
+        int num=0;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]==' ')
+            {
+                num+=mp2[temp]*13;
+                temp.clear();
+                continue;
+            }
+            else if(i==s.size()-1)
+            {
+                if(num==0)
+                {
+                    temp.push_back(s[i]);
+                    for(int i=0;i<24;i++)
+                    {
+                        if(temp==Earth_Mars[i])
+                        {
+                            if(i<=12)
+                                num+=i;
+                            else num=num+(i-12)*13;
+                            break;
+                        }
+                    }
+                    continue;
+                }
+                else
+                {
+                    temp.push_back(s[i]);
+                    for(int i=0;i<24;i++)
+                    {
+                        if(Earth_Mars[i]==temp)
+                        {
+                            num+=i;
+                            break;
+                        }
+                    }
+                }
+            }
+            temp.push_back(s[i]);
+        }
+        cout<<num<<endl;
+    }
+}
+
+int main()
+{
+    mp[0]="tret";
+    mp[1]="jan";
+    mp[2]="feb";
+    mp[3]="mar";
+    mp[4]="apr";
+    mp[5]="may";
+    mp[6]="jun";
+    mp[7]="jly";
+    mp[8]="aug";
+    mp[9]="sep";
+    mp[10]="oct";
+    mp[11]="nov";
+    mp[12]="dec";
+    mp2["tam"]=1;
+    mp2["hel"]=2;
+    mp2["maa"]=3;
+    mp2["huh"]=4;
+    mp2["tou"]=5;
+    mp2["kes"]=6;
+    mp2["hei"]=7;
+    mp2["elo"]=8;
+    mp2["syy"]=9;
+    mp2["lok"]=10;
+    mp2["mer"]=11;
+    mp2["jou"]=12;
+    cin>>n;
+    for(int i=0;i<n+1;i++)
+    {
+        string temp;
+        getline(cin,temp);
+        v.push_back(temp);
+    }
+    v.erase(v.begin());
+    for(int i=0;i<n;i++)
+    {
+        transform(v[i]);
+    }
+    return 0;
+
+}
