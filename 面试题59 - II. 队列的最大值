@@ -1,0 +1,36 @@
+class MaxQueue {
+    queue <int> q;
+    vector<int> maxn;
+public:
+    MaxQueue() {
+
+    }
+
+    int max_value() {
+        if(!q.empty()) return maxn[0];
+        else return -1;
+    }
+
+    void push_back(int value) {
+        q.push(value);
+        while(maxn.size()!=0&&value>maxn[maxn.size()-1])
+        {
+            maxn.erase(maxn.begin()+maxn.size()-1);
+        }
+        maxn.push_back(value);
+    }
+
+    int pop_front() {
+        if(!q.empty())
+        {
+            q.pop();
+            int temp=q.front();
+            if(temp==maxn[0])
+            {
+                maxn.erase(maxn.begin());
+            }
+            return temp;
+        }
+        else return -1;
+    }
+};
