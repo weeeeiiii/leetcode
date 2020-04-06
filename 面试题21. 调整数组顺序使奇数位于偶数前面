@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        vector<int> oushu;
+        vector<int> jishu;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]%2==0) oushu.push_back(nums[i]);
+            else jishu.push_back(nums[i]);
+        }
+        for(int i=0;i<oushu.size();i++)
+        {
+            jishu.push_back(oushu[i]);
+        }
+        return jishu;
+    }
+};
