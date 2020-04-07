@@ -1,0 +1,29 @@
+class Solution {
+    map<char,int> mp;
+    map<char,int> mp_order;
+public:
+    char firstUniqChar(string s) {
+        for(int i=0;i<s.length();i++)
+        {
+            mp[s[i]]++;
+            if(mp_order[s[i]]==0)
+            {
+                mp_order[s[i]]=i+1;
+            }
+        }
+        int tag=0;
+        int one_char,order_char=50010;
+
+        for(int i=0;i<26;i++)
+        {
+            if(mp[i+'a']==1&&mp_order[i+'a']<order_char)
+            {
+                tag=1;
+                one_char=i+'a';
+                order_char=mp_order[i+'a'];
+            }
+        }
+        if(tag==0) return ' ';
+        else return one_char;
+    }
+};
