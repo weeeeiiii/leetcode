@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        int dp[n];
+        memset(dp,0, sizeof(dp));
+
+        int maxn=0;
+        dp[n-1]=prices[n-1];
+
+        for(int i=n-2;i>=0;i--)
+        {
+            if(prices[i]>dp[i+1])
+            {
+                dp[i]=prices[i];
+            }
+            else
+            {
+                dp[i]=dp[i+1];
+                if(dp[i+1]-prices[i]>maxn) maxn=dp[i+1]-prices[i];
+            }
+        }
+        return maxn;
+    }
+};
