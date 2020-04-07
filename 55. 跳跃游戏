@@ -9,7 +9,7 @@ public:
         {
             int maxn=0;
             int length=i+distance;
-            for(int j=i;j<=length;j++)
+            for(int j=i+1;j<=length;j++)
             {
                 if(j+nums[j]>maxn)
                 {
