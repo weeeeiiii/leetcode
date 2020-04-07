@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if(nums.size()==1) return 0;
+        int distance=nums[0];
+        int times=0;
+        int i=0;
+
+        while(i+distance<nums.size()-1)
+        {
+            times++;
+            int maxn=0;
+            int length=i+distance;
+            for(int j=i;j<=length;j++)
+            {
+                if(j+nums[j]>maxn)
+                {
+                    maxn=j+nums[j];
+                    i=j;
+                    distance=nums[j];
+                }
+            }
+        }
+        return times;
+    }
+};
