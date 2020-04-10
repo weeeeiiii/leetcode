@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int xiabiao=0;
+        int now=0,n=gas.size();
+        vector<int> visited;
+        for(int i=0;i<n;i++) visited.push_back(0);
+
+        now=gas[xiabiao];
+        int xiabiao_2;
+        for(int i=0;i<n;i++)
+        {
+            xiabiao_2=(xiabiao+i)%n;
+            visited[xiabiao_2]=1;
+            if(now-cost[xiabiao_2]<0)
+            {
+                xiabiao=(xiabiao_2+1)%n;
+                now=gas[xiabiao];
+                i=-1;
+                if(visited[xiabiao]==1) return -1;
+                continue;
+            }
+            now=now-cost[xiabiao_2]+gas[(xiabiao_2+1)%gas.size()];
+        }
+        return xiabiao;
+    }
+};
