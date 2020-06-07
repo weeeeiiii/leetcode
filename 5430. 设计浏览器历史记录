@@ -1,0 +1,41 @@
+class BrowserHistory {
+    stack<string> s;
+    stack<string> p;
+public:
+    BrowserHistory(string homepage) {
+        stack<string> temp;
+        s=temp;
+        s.push(homepage);
+        stack<string> temp2;
+        p=temp2;
+    }
+
+    void visit(string url) {
+        s.push(url);
+        stack<string> temp2;
+        p=temp2;
+    }
+
+    string back(int steps) {
+        if(s.size()==1) return s.top();
+        p.push(s.top());
+        s.pop();
+        for(int i=1;i<steps;i++)
+        {
+            if(s.size()==1) break;
+            p.push(s.top());
+            s.pop();
+        }
+        return s.top();
+    }
+
+    string forward(int steps) {
+        for(int i=0;i<steps;i++)
+        {
+            if(p.empty()) break;
+            s.push(p.top());
+            p.pop();
+        }
+        return s.top();
+    }
+};
