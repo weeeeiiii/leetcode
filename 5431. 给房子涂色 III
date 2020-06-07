@@ -1,0 +1,61 @@
+#define inf 1e8
+class Solution {
+public:
+    int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int target) {
+        vector<vector<vector<int>>> dp(m,vector<vector<int>>(n+1,vector<int>(target+1,inf)));
+        if(houses[0]!=0) //如果第0号房子已经被染色
+        {
+            dp[0][houses[0]][1]=0;   //则第0号房子成本为0
+        }
+        else
+        {
+            for(int i=1;i<=n;i++)
+            {
+                dp[0][i][1]=cost[0][i-1];   //更新第0号的成本
+            }
+        }
+
+        for(int i=1;i<m;i++)   //从房子开始遍历
+        {
+            if(houses[i]==0)   //如果第i号房子未被染色
+            {
+                for(int j1=1;j1<=n;j1++)
+                {
+                    for(int k=1;k<=target;k++)
+                    {
+                        for(int j2=1;j2<=n;j2++)
+                        {
+                            if(j1==j2)
+                            {
+                                dp[i][j1][k]=min(dp[i][j1][k],dp[i-1][j2][k]+cost[i][j1-1]);
+                            }
+                            else
+                            {
+                                dp[i][j1][k]=min(dp[i][j1][k],dp[i-1][j2][k-1]+cost[i][j1-1]);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for(int k=1;k<=target;k++)
+                {
+                    for(int j2=1;j2<=n;j2++)
+                    {
+                        int j1=houses[i];
+                        if(j1==j2) dp[i][j1][k]=min(dp[i][j1][k],dp[i-1][j2][k]);
+                        else dp[i][j1][k]=min(dp[i][j1][k],dp[i-1][j2][k-1]);
+                    }
+                }
+            }
+        }
+        int ans=1e8;
+        for(int i=1;i<=n;i++)
+        {
+            ans=min(ans,dp[m-1][i][target]);
+        }
+        if(ans==1e8) ans=-1;
+        return ans;
+    }
+};
