@@ -1,0 +1,30 @@
+int m;
+class Solution {
+    static bool cmp(int a,int b)
+    {
+        if(abs(a-m)>abs(b-m))
+        {
+            return true;
+        }
+        else if(abs(a-m)==abs(b-m)&&a>b)
+        {
+            return true;
+        }
+        return false;
+    }
+public:
+    vector<int> getStrongest(vector<int>& arr, int k) {
+        sort(arr.begin(),arr.begin()+arr.size());
+        int n=arr.size();
+        m=arr[((n - 1) / 2)];
+
+        sort(arr.begin(),arr.begin()+arr.size(),cmp);
+        vector<int> v;
+
+        for(int i=0;i<k;i++)
+        {
+            v.push_back(arr[i]);
+        }
+        return v;
+    }
+};
