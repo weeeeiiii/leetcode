@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> avoidFlood(vector<int>& rains) {
+        int n=rains.size();
+        set<int> zero;
+        vector<int> ans(n,1);
+        map<int,int> mp;  //记录对应湖上一次被填满的日期
+
+        for(int i=0;i<n;i++)
+        {
+            int s=rains[i];   //s为湖的编号
+            if(s==0)  //湖的编号为0，表示晴天
+            {
+                zero.insert(i);  //将晴天的日期记录下来
+                continue;
+            }
+            if(mp.count(s))   //湖会产生溢出
+            {
+                auto it=zero.lower_bound(mp[s]);  //返回第一个大于等于mp[s]的数的迭代器
+                if(it==zero.end()) return {};
+                ans[*it]=s;
+                zero.erase(it);
+            }
+            mp[s]=i;
+            ans[i]=-1;
+        }
+        return ans;
+    }
+};
