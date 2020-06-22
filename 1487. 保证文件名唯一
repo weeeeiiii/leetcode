@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<string> getFolderNames(vector<string>& names) {
+        map<string,int> mp;
+        vector<string> v;
+
+        for(int i=0;i<names.size();i++)
+        {
+            string s=names[i];
+            if(mp[s]==0)
+            {
+                mp[s]=1;
+                v.push_back(s);
+            }
+            else
+            {
+                int number=mp[s];
+                mp[s]++;
+                string temp;
+                while(1)
+                {
+                    string temp=s+"("+to_string(number)+")";
+                    if(mp[temp]==0)
+                    {
+                        mp[temp]=1;
+                        v.push_back(temp);
+                        break;
+                    }
+                    else
+                    {
+                        number++;
+                    }
+                }
+            }
+        }
+        return v;
+    }
+};
