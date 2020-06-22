@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int xorOperation(int n, int start) {
+        vector<int> v;
+        v.resize(n);
+        
+        for(int i=0;i<n;i++)
+        {
+            v[i]=i*2+start;
+        }
+        
+        int XOR=v[0];
+        for(int i=1;i<n;i++)
+        {
+            XOR=XOR^v[i];
+        }
+        return XOR;
+    }
+};
