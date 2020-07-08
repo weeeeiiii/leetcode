@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+        sort(left.begin(),left.begin()+left.size());
+
+        int maxn=0;
+        if(left.size()!=0)
+        {
+            maxn=left[left.size()-1];
+        }
+
+        sort(right.begin(),right.begin()+right.size());
+
+        if(right.size()!=0)
+        {
+            maxn=max(maxn,n-right[0]);
+        }
+        return maxn;
+    }
+};
