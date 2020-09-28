@@ -1,0 +1,55 @@
+#include <iostream>
+#include <deque>
+#include <string>
+#include <map>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <queue>
+#include <stack>
+
+using namespace std;
+
+
+class Node {
+public:
+    int val;
+    Node *left;
+    Node *right;
+    Node *next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node *_left, Node *_right, Node *_next)
+            : val(_val), left(_left), right(_right), next(_next) {}
+};
+
+
+class Solution {
+public:
+    Node *connect(Node *root) {
+        queue<Node *> q;
+        if(root!=NULL) q.push(root);
+
+        int number=0;
+        while (!q.empty()) {
+            queue<Node*> temp=q;
+            queue<Node*> clear;
+            q=clear;
+            while(!temp.empty())
+            {
+                Node *fro=temp.front();
+                temp.pop();
+                if(!temp.empty())
+                {
+                    fro->next=temp.front();
+                }
+                if(fro->left!=NULL) q.push(fro->left);
+                if(fro->right!=NULL) q.push(fro->right);
+            }
+        }
+        return root;
+    }
+};
