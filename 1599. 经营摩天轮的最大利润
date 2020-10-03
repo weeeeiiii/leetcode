@@ -1,0 +1,28 @@
+    class Solution {
+        public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
+            int maxn = 0;
+            int peple = 0;
+            int lirun = 0;
+            int number=-1;
+
+            for (int i = 0; i < customers.length || peple > 0; i++) {
+                if (i < customers.length)
+                    peple += customers[i];
+
+                if (peple <= 4) {
+                    lirun += peple * boardingCost - runningCost;
+                    peple = 0;
+                } else {
+                    lirun += 4 * boardingCost - runningCost;
+                    peple-=4;
+                }
+                if(lirun>maxn)
+                {
+                    maxn=lirun;
+                    number=i+1;
+                }
+            }
+            return number;
+
+        }
+    }
