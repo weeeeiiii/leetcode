@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &nums, int target) {
+        int n = nums.size();
+        map<int, int> mp;
+        vector<int> v;
+
+        for (int i = 1; i <= n; i++) {
+            mp[nums[i - 1]] = i;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (mp[target - nums[i]] > 0 && i != (mp[target - nums[i]] - 1)) {
+                v.push_back(i);
+                v.push_back(mp[target - nums[i]] - 1);
+                break;
+            }
+        }
+        return v;
+    }
+};
